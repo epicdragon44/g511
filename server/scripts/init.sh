@@ -3,3 +3,6 @@ opam install -y opium
 
 # Install Curly to make API calls
 opam install -y curly
+
+# Install Jane Street's ppx_inline_test to make (much cleaner) inline tests
+opam install -y ppx_inline_test

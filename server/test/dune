@@ -1,2 +1,3 @@
 (test
- (name server))
+ (name server)
+ (libraries server ounit2))
