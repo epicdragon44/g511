@@ -1,0 +1,2 @@
+dune fmt
+dune build
