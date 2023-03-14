@@ -27,3 +27,7 @@ Kills the silent server process (kills whatever's running on port 9000).
 Runs the project in development mode (with debug logs) on port 9000.
 
 Note that it may look like the script has frozen. It (probably) hasn't!
+
+### `./scripts/test.sh`
+
+Runs tests in `lib`.
