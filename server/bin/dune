@@ -1,4 +1,4 @@
 (executable
  (public_name server)
  (name main)
- (libraries server opium))
+ (libraries server opium server.helperlib))

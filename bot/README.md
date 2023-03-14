@@ -8,7 +8,7 @@ When installing new packages with OPAM, make sure to add them to `libraries` in 
 
 This repository must contain a .env file with the following variables:
 
--   `BOT_TOKEN`: The Telegram bot token provided by BotFather.
+-   `BOT_TOKEN`: The Telegram bot token provided by BotFather. If you need a new Bot Token, message @BotFather on Telegram (/start).
 
 ## Scripts
 

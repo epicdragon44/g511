@@ -1,2 +1,4 @@
 (library
- (name server))
+ (name server)
+ (public_name server.helperlib)
+ (libraries curly))

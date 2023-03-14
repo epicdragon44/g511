@@ -29,6 +29,12 @@ First, have `brew` and `opam` installed on your computer.
 
 Then, run `./init.sh` to setup everything for the first time.
 
+## Local Development
+
+To work on the bot, cd into the bot directory and refer to the README there for scripts you're allowed to run in there.
+
+To work on the server, cd into the server directory and refer to the README there for scripts you're allowed to run in there.
+
 ## Deployment
 
-Run `./deploy.sh` to deploy the bot to the server.
+Run `./deploy.sh` to deploy the bot to the server (don't run this except in production!).

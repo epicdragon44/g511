@@ -20,7 +20,8 @@ module MyBot = Mk (struct
 
   let commands =
     let open Telegram.Actions in
-    let say_hi { chat = { id; _ }; _ } = send_message ~chat_id:id "Hi there!"
+    let health_check { chat = { id; _ }; _ } =
+      send_message ~chat_id:id "Hi there!"
     and my_pics = function
       | { chat; from = Some { id; _ }; _ } -> (
           get_user_profile_photos id /> function
@@ -31,22 +32,19 @@ module MyBot = Mk (struct
                 "Couldn't get your profile pictures!")
       | { chat = { id; _ }; _ } ->
           send_message ~chat_id:id "Couldn't get your profile pictures!"
-    and check_admin { chat = { id; _ }; _ } =
-      send_message ~chat_id:id "Congrats, you're an admin!"
     in
     [
-      { name = "say_hi"; description = "Say hi!"; enabled = true; run = say_hi };
+      {
+        name = "health_check";
+        description = "Responds if the bot is up.";
+        enabled = true;
+        run = health_check;
+      };
       {
         name = "my_pics";
         description = "Count profile pictures";
         enabled = true;
         run = my_pics;
-      };
-      {
-        name = "admin";
-        description = "Check whether you're an admin";
-        enabled = true;
-        run = with_auth ~command:check_admin;
       };
     ]
 end)
