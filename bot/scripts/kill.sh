@@ -1,0 +1,1 @@
+lsof -t -i tcp:9001 | xargs kill
