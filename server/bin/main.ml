@@ -52,10 +52,12 @@ let calculate_handler req =
       [Router.param req "from"] is the unit to convert from.
       [Router.param req "to"] is the unit to convert to.
   *)
+
+(* MY WORK STARTS HERE *)
 let convert_units_handler req =
-  "TODO: @Ant Implement a unit converter that converts between units of \
-   measurement. This code should evaluate to a string."
-  |> Response.of_plain_text |> Lwt.return
+  (* TODO: @Ant Implement a unit converter that converts between units of \
+     measurement. This code should evaluate to a string. *)
+  "yo" |> Response.of_plain_text |> Lwt.return
 
 (** Convert between currencies at their current exchange rate.
       [Router.param req "amt"] is the amount to convert.
@@ -73,6 +75,8 @@ let time_handler req =
   "TODO: @Ant Implement a function that gets you the current time in a given \
    timezone. This code should evaluate to a string." |> Response.of_plain_text
   |> Lwt.return
+
+(* MY WORK ENDS HERE *)
 
 (** Get a random number between a low and high bound, inclusive.
       [Router.param req "low"] is the low bound.
