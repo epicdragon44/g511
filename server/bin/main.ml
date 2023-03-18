@@ -1,6 +1,12 @@
 open Opium
 open Server.Lib
 
+let get_env target =
+  let env_variables = Dotenv.parse () in
+  match List.find_opt (fun (name, _) -> name = target) env_variables with
+  | Some (_, value) -> value
+  | None -> raise (Failure "Could not find environment variable!")
+
 let print_param_handler req =
   Printf.sprintf "Hello, %s\n" (Router.param req "name")
   |> Response.of_plain_text |> Lwt.return
