@@ -1,4 +1,4 @@
 (executable
  (public_name server)
  (name main)
- (libraries server opium server.helperlib))
+ (libraries server opium server.helperlib cohttp-lwt-unix))
