@@ -8,10 +8,12 @@ let get_env target =
 
 module MyBot = Mk (struct
   open Chat
-  open User
+
+  (* open User *)
   open Command
   open Message
-  open UserProfilePhotos
+
+  (* open UserProfilePhotos *)
   include Telegram.BotDefaults
 
   let token = get_env "BOT_TOKEN"
@@ -22,16 +24,10 @@ module MyBot = Mk (struct
     let open Telegram.Actions in
     let health_check { chat = { id; _ }; _ } =
       send_message ~chat_id:id "Hi there!"
-    and my_pics = function
-      | { chat; from = Some { id; _ }; _ } -> (
-          get_user_profile_photos id /> function
-          | Result.Success photos ->
-              send_message ~chat_id:chat.id "Your photos: %d" photos.total_count
-          | Result.Failure _ ->
-              send_message ~chat_id:chat.id
-                "Couldn't get your profile pictures!")
-      | { chat = { id; _ }; _ } ->
-          send_message ~chat_id:id "Couldn't get your profile pictures!"
+    and echo input =
+      match input with
+      | { chat; text = Some text; _ } -> send_message ~chat_id:chat.id "%s" text
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage of /echo"
     in
     [
       {
@@ -40,12 +36,7 @@ module MyBot = Mk (struct
         enabled = true;
         run = health_check;
       };
-      {
-        name = "my_pics";
-        description = "Count profile pictures";
-        enabled = true;
-        run = my_pics;
-      };
+      { name = "echo"; description = "Echo text"; enabled = true; run = echo };
     ]
 end)
 
