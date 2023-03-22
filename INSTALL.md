@@ -9,3 +9,5 @@ Then, you must have OCaml and OPAM installed as described in the Cornell CS 3110
 # Installation
 
 Make sure you are in the root directory of the repository, then run `make initialize` to setup everything for the first time.
+
+Having done this, return to **`README.md` > Documentation** and keep reading.

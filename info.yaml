@@ -1,0 +1,41 @@
+---
+# Members of your group.
+group:
+    - name: Daniel Wei
+      netid: dlw266
+    - name: Ken Chiem
+      netid: kc696
+    - name: Ryan Lee
+      netid: rjl275
+    - name: Anthony Huang
+      netid: zh94
+# Your PM.
+pm:
+    name: Cathryn Li
+    netid: cl893
+# Set to false if you don't want your gallery entry to be public.
+publish: true
+# Pithy title
+title: "Bocaml -- your friendly neighborhood Telegram Chatbot"
+# OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
+git-repo: "https://github.com/epicdragon44/g511"
+# If you have no demo screencast, replace the url string with an empty string ""
+demo-video-url: ""
+# Write a short, attention-grabbing description of your project.
+desc: >
+    🤖 Meet Bocaml: The Ultimate All-in-One Telegram Chat-Bot! 🚀
+
+    Tired of juggling multiple chat-bots for everyday tasks? Say hello to Bocaml, your new AI-powered personal assistant that's revolutionizing the way you use Telegram! 🎉
+
+    Our team of expert developers has harnessed the power of cutting-edge AI technology like ChatGPT-4 and advanced NLP, along with a plethora of libraries and APIs, to create the ultimate all-in-one chat-bot experience. 🧠💬
+
+    🌟 Bocaml is your one-stop solution for:
+    ✔️ Instant unit, time-zone, and currency conversions 🔄
+    ✔️ Lightning-fast problem-solving 🧩
+    ✔️ And so much more, all in a single chat! 🌐
+
+    Simply type your query, and Bocaml's AI-powered magic will deliver the answers you need with unparalleled ease and accuracy. 🎩✨
+
+    Why wait? Add Bocaml to your Telegram and unleash the full potential of AI-assisted convenience today! 📲💡
+
+    (Named after the Louie's Lunch Bo Burger. Implemented in OCaml.)
