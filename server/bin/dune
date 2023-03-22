@@ -1,4 +1,4 @@
 (executable
  (public_name server)
  (name main)
- (libraries server opium dotenv))
+ (libraries server opium cohttp-lwt-unix cohttp dotenv))
