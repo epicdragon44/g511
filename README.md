@@ -11,25 +11,40 @@ This is the monorepo for a little Telegram chat-bot named Bo, after the Ithaca B
 
 # Documentation
 
-## Installation
+See `INSTALL.md` for first-time setup instructions. Assuming you've already done that, here's some more information.
 
-See `INSTALL.md` for instructions.
+### Running the code
 
-## Local Development
+To start:
 
-Assuming you've run through the installation instructions, you can run the bot locally with `make dev`. This will start the bot and the server, and you can interact with the bot on Telegram `@bocaml-beta-1`.
+-   `make build` will build the bot and server, as well as format the code. This might help with red squiggly lines everywhere. Run this before you start working!
+-   `make run` will start the server on port 9000 and the bot on port 9001.
 
-Commands to help you along your way:
+To stop:
 
--   `make build` will build the bot and server. This might help with red squiggly lines everywhere.
--   `make clean` will clean the bot and server of build artifacts. Don't run this unless you know what you're doing.
+-   `make kill` will kill the bot and the server (terminates all processes on ports 9000 and 9001).
 
-## Deployment
+You can interact with the bot on Telegram `@bocaml-beta-1`.
 
-Run `make deploy` to deploy the bot to the server.
+### Files
 
-If you need to kill it, run `make kill` to kill the bot and the server.
+Edit these two files to get started!
 
-## Further Documentation
+-   `bot/bin/main.ml` is the entry point for the bot.
+-   `server/bin/main.ml` is the entry point for the server.
 
-Within the `bot` and `server` directories, there should be a `README.md` with information pertinent to each sub-repo.
+Helper functions and tests are in `bot/lib/` and `server/lib/`.
+
+### Secrets
+
+-   You'll need to create a file `bot/.env` that contains one line: `BOT_TOKEN = <some key>`, where `some key` is the Telegram bot token provided by BotFather. If you need a new Bot Token, message @BotFather on Telegram (/start). Otherwise, refer to our Discord for the token.
+
+### Server API
+
+Check out our [Postman](https://app.getpostman.com/join-team?invite_code=19786b3504f32611f7d4ec9a9c7a8fe1).
+
+### Dependency Management
+
+This project uses OPAM to manage dependencies.
+
+To install a new dependency, run `make install` and follow the instructions.

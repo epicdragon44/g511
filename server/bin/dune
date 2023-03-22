@@ -2,3 +2,8 @@
  (public_name server)
  (name main)
  (libraries server opium cohttp-lwt-unix cohttp dotenv))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))

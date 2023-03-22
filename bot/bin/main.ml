@@ -15,7 +15,7 @@ module MyBot = Mk (struct
   include Telegram.BotDefaults
 
   let token = get_env "BOT_TOKEN"
-  let command_postfix = Some "bocaml_beta-1"
+  let command_postfix = Some "bocaml-beta-1"
   (* Can be replaced with whatever the bot's name is, makes the bot only respond to /say_hi *)
 
   let commands =
