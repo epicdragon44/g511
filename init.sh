@@ -22,3 +22,7 @@ chmod +x scripts/*.sh
 ./scripts/init.sh
 ./scripts/build.sh
 cd ..
+
+# Evaluate env
+
+eval $(opam env)

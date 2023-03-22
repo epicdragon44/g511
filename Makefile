@@ -27,4 +27,11 @@ kill :
 	cd server && ./scripts/kill.sh
 	cd bot && ./scripts/kill.sh
 
-
+zip:
+	@echo "Zipping..."
+	rm -rf ./server/_build
+	rm -rf ./bot/_build
+	rm -f g511.zip
+	zip -r g511.zip .
+	cd server && ./scripts/build.sh
+	cd bot && ./scripts/build.sh

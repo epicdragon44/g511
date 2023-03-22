@@ -52,3 +52,11 @@ Check out our [Postman](https://app.getpostman.com/join-team?invite_code=19786b3
 This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
+
+### Other
+
+#### Zipping
+
+`make zip` will clean build artifacts, and then zip the files into a shareable archive.
+
+Note that the generated ZIP archive will include `.env` files. This makes it ideal for internal transfers, submissions to CMSX, etc. It is NOT to be made public. The generated zip archive will NOT be committed to git.
