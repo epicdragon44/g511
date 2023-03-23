@@ -1,2 +1,11 @@
 (library
- (name bot))
+ (name bot)
+ (public_name bot.library)
+ (inline_tests)
+ (preprocess
+  (pps ppx_inline_test)))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))

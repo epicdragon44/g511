@@ -1,0 +1,1 @@
+git ls-files "*.ml" | xargs wc -l | awk '{ total += $1 } END { print total }'

@@ -8,12 +8,6 @@ open Yojson.Safe.Util
 let _ = Dotenv.export () |> ignore
 let openai_key = Sys.getenv "OPENAI_TOKEN"
 
-let get_env target =
-  let env_variables = Dotenv.parse () in
-  match List.find_opt (fun (name, _) -> name = target) env_variables with
-  | Some (_, value) -> value
-  | None -> raise (Failure "Could not find environment variable!")
-
 let print_param_handler req =
   Printf.sprintf "Hello, %s\n" (Router.param req "name")
   |> Opium.Response.of_plain_text |> Lwt.return
@@ -377,8 +371,6 @@ let calculate_handler req =
   *)
 
 let convert_units_handler req =
-  (* TODO: @Ant Implement a unit converter that converts between units of \
-     measurement. This code should evaluate to a string. *)
   let amt = float_of_string (Router.param req "amt") in
   let from_unit = Router.param req "from" in
   let to_unit = Router.param req "to" in
@@ -427,8 +419,6 @@ let convert_units_handler req =
   *)
 
 let convert_currency_handler req =
-  (* TODO: @Ant Implement a currency converter. This code should evaluate to a \
-     string. *)
   let amt = Router.param req "amt" in
   let from_cur = Router.param req "from" in
   let to_cur = Router.param req "to" in
@@ -449,8 +439,6 @@ let convert_currency_handler req =
 
 (** Get the current time in a given timezone (format: Area/Location). *)
 let time_handler req =
-  (* TODO: @Ant Implement a function that gets you the current time in a given \
-     timezone. This code should evaluate to a string. *)
   let area = Router.param req "area" in
   let location = Router.param req "location" in
   let uri =

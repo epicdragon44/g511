@@ -1,3 +1,5 @@
+# Custom scripts for setup only. Uses bash scripts at the root level to encapsulate complex logic.
+
 initialize :
 	@echo "Initializing..."
 	find ./ -type f -iname "*.sh" -exec chmod +x {} \;
@@ -6,6 +8,8 @@ initialize :
 install :
 	@echo "Calling the 'install dependency' script..."
 	./add-dep.sh
+
+# Custom scripts for development. Uses bash scripts located within scripts/ in each sub-repo for more granular control.
 
 build :
 	@echo "Building..."
@@ -27,6 +31,19 @@ kill :
 	cd server && ./scripts/kill.sh
 	cd bot && ./scripts/kill.sh
 
+# Tests all the code and outputs the results to the console.
+
+test:
+	@echo "Testing..."
+	cd server && dune runtest
+	cd bot && dune runtest
+
+# Commands to help with submission.
+
+loc:
+	@echo "Counting lines of code..."
+	./loc.sh
+
 zip:
 	@echo "Zipping..."
 	rm -rf ./server/_build
@@ -35,3 +52,10 @@ zip:
 	zip -r g511.zip .
 	cd server && ./scripts/build.sh
 	cd bot && ./scripts/build.sh
+
+# Commands to help with maintaining a deployed version.
+
+force-update:
+	@echo "Force updating the local copy from main on origin..."
+	git fetch --all
+	git reset --hard origin/main
