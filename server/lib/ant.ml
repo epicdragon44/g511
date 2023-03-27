@@ -12,3 +12,5 @@
         - Write readable, verbose code where possible.
     - Add unit tests using the Jane Street testing framework. See dan.ml's unit tests for examples.
 *)
+
+let hi = "aye aye captain"
