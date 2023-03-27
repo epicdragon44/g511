@@ -55,10 +55,16 @@ This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
 
-### Other
+### Submissions
+
+If you're a grader, you might be interested in this!
 
 #### Zipping
 
 `make zip` will clean build artifacts, and then zip the files into a shareable archive.
 
 Note that the generated ZIP archive will include `.env` files. This makes it ideal for internal transfers, submissions to CMSX, etc. It is NOT to be made public. The generated zip archive will NOT be committed to git.
+
+#### Counting Lines of Code
+
+`make loc` will return you a count of the total number of lines of code spread across all `.ml` files in the monorepo.
