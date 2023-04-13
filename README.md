@@ -19,7 +19,7 @@ See `INSTALL.md` for first-time setup instructions. Assuming you've already done
 
 -   You'll need to create/have a file `server/.env` that contains one line: `OPENAI_TOKEN = <some key>`, where `some key` is the OpenAI API key provided by OpenAI. If you need a new API key, refer to our Discord for the key.
 
-### Run the Code
+## Build the Code
 
 To start:
 
@@ -34,7 +34,7 @@ To stop:
 You can interact with the bot while the code is running on Telegram `@bocaml-beta-1`.
 You can test the server via Postman. Checkout **Server API** below.
 
-### Test the Code
+## Test the Code
 
 -   `make test` will run all the tests in server and bot (using Jane Street's PPX testing library). Note that if there is NO output, then all tests PASSED!
 
@@ -54,6 +54,12 @@ Check out our [Postman](https://app.getpostman.com/join-team?invite_code=19786b3
 This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
+
+## Running the Code
+
+Assuming the code is built and running on a server somewhere, you can interact with the bot on Telegram `@bocaml-beta-1`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
+
+If you want to more directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line. Check out **Server API** above for the endpoints.
 
 ### Submissions
 
