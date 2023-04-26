@@ -1,9 +1,6 @@
 (library
  (name bot)
- (public_name bot.library)
- (inline_tests)
- (preprocess
-  (pps ppx_inline_test)))
+ (public_name bot.library))
 
 (env
  (dev

@@ -35,8 +35,8 @@ kill :
 
 test:
 	@echo "Testing..."
-	cd server && dune runtest
-	cd bot && dune runtest
+	cd server && dune exec test/main.exe
+	cd bot && dune exec test/main.exe
 
 # Commands to help with submission.
 

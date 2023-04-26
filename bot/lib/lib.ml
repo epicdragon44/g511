@@ -45,10 +45,3 @@ let remove_first_word_of (s : string) : string =
       ]}
 *)
 let echo (msg : string) = msg
-
-(* ========= TESTS: Using Jane Street's PPX Inline Syntax Extension ========= *)
-
-let%test "remove_first_word_of works" =
-  remove_first_word_of "hello world" = "world"
-
-let%test "echo works" = echo "hello" = "hello"

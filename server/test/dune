@@ -1,6 +1,3 @@
-(library
+(test
  (name main)
- (libraries server ounit2)
- (inline_tests)
- (preprocess
-  (pps ppx_inline_test)))
+ (libraries server ounit2))
