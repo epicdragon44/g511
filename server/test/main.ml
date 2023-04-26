@@ -17,6 +17,7 @@ let rand_btwn_tests = [ rand_btwn_test_helper 0 10; rand_btwn_test_helper 1 1 ]
 let coin_flip_tests = [ coin_flip_test_helper () ]
 
 let suite =
-  "search test suite" >::: List.flatten [ rand_btwn_tests; coin_flip_tests ]
+  "test suite for all server functions"
+  >::: List.flatten [ rand_btwn_tests; coin_flip_tests ]
 
 let _ = run_test_tt_main suite

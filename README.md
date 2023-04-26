@@ -36,14 +36,14 @@ You can test the server via Postman. Checkout **Server API** below.
 
 ## Test the Code
 
--   `make test` will run all the tests in server and bot (using Jane Street's PPX testing library). Note that if there is NO output, then all tests PASSED!
+-   `make test` will run all the tests in server and bot (using OUnit). Expect to see two OKs -- one for the bot and one for the server!
 
 ### Get Crackin'
 
 Edit these two files to get started!
 
 -   `bot/bin/main.ml` is the entry point for the bot.
--   `server/bin/main.ml` is the entry point for the server. Additional server code is in `server/lib`.
+-   `server/bin/main.ml` is the entry point for the server.
 
 ### Cross-reference the Server API
 
