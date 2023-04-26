@@ -11,7 +11,7 @@ This is the monorepo for a little Telegram chat-bot named Bo, after the Ithaca B
 
 # Documentation
 
-See `INSTALL.md` for first-time setup instructions. Assuming you've already done that, the following sections are mostly in-order of what you should probably do.
+See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. Assuming you've already done that, the following sections are mostly in-order of what you should probably do.
 
 ### Check your Secrets
 
