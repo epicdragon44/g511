@@ -15,5 +15,7 @@
    - an example of how to use it
    Example in lib.ml
 
-   Then, TEST each one. This should be similar to how you did server/lib/<ur name>.ml
+   Then, TEST each one. Write unit tests in bot/test/main.ml using OUnit.
+
+   This should be similar to how you did server/lib/<ur name>.ml
 *)
