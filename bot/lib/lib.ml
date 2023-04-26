@@ -29,26 +29,3 @@ let remove_first_word_of (s : string) : string =
       else loop (i + 1)
     in
     loop 0
-
-(** Echoes a string back to you.
-
-      Precondition: None.
-      Postcondition: The string is the same as the string passed in.
-
-      @param msg The string to echo.
-
-      @return The string that was passed in.
-
-      @example
-      {[
-        echo "hello" = "hello"
-      ]}
-*)
-let echo (msg : string) = msg
-
-(* ========= TESTS: Using Jane Street's PPX Inline Syntax Extension ========= *)
-
-let%test "remove_first_word_of works" =
-  remove_first_word_of "hello world" = "world"
-
-let%test "echo works" = echo "hello" = "hello"

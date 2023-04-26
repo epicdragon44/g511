@@ -615,16 +615,14 @@ let ai_t_game_handler req game =
 let rng_handler req =
   let low = int_of_string (Router.param req "low") in
   let high = int_of_string (Router.param req "high") in
-  let num = low + Random.int (high - low + 1) in
+  let num = rand_btwn low high in
   string_of_int num |> Opium.Response.of_plain_text |> Lwt.return
 
 (** Flip a coin.
       Return either "Heads" or "Tails"
   *)
 let coin_flip_handler _ =
-  (let num = Random.int 2 in
-   if num = 0 then "Heads" else "Tails")
-  |> Opium.Response.of_plain_text |> Lwt.return
+  coin_flip () |> Opium.Response.of_plain_text |> Lwt.return
 
 let _ =
   App.empty
