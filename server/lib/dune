@@ -1,10 +1,7 @@
 (library
  (name server)
  (public_name server.library)
- (libraries curly ounit2 cohttp lwt yojson cohttp-lwt)
- (inline_tests)
- (preprocess
-  (pps ppx_inline_test)))
+ (libraries curly ounit2 cohttp lwt yojson cohttp-lwt))
 
 (env
  (dev

@@ -1,2 +1,8 @@
 (library
- (name bot))
+ (name bot)
+ (public_name bot.library))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))

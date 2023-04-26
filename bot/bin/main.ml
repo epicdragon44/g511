@@ -1,4 +1,5 @@
 open Telegram.Api
+open Bot.Lib
 
 let get_env target =
   let env_variables = Dotenv.parse () in
@@ -18,7 +19,6 @@ module MyBot = Mk (struct
 
   let token = get_env "BOT_TOKEN"
   let command_postfix = Some "bocaml-beta-1"
-  (* Can be replaced with whatever the bot's name is, makes the bot only respond to /say_hi *)
 
   let commands =
     let open Telegram.Actions in
@@ -26,9 +26,34 @@ module MyBot = Mk (struct
       send_message ~chat_id:id "Hi there!"
     and echo input =
       match input with
-      | { chat; text = Some text; _ } -> send_message ~chat_id:chat.id "%s" text
+      | { chat; text = Some text; _ } ->
+          text |> remove_first_word_of |> echo
+          |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage of /echo"
+
+    (** Secondary TODO: For each and every server function you wrote:
+    
+      - Copy paste the following bit of code, fill in the <template bits>, and then paste it immediately above.
+
+          and <YOUR_FUNCTION_NAME> input =
+            match input with
+            | { chat; text = Some text; _ } ->
+                text |> remove_first_word_of |> <YOUR_FUNCTION_IN_LIB/YOURNAME.ml> <-- do something with the text you're being passed here.
+                |> send_message ~chat_id:chat.id "%s"
+            | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
+      - Copy and paste the following bit of code, fill in the <template bits>, and then paste it in the array below.
+
+          {
+            name = "<HUMAN_TYPE-ABLE_FUNCTION>"; <-- eg. if your function is called `play`, the user will send `/play` to the bot to trigger this function.
+            description = "<HUMAN_READABLE_DESCRIPTION>";
+            enabled=true;
+            run = <YOUR_FUNCTION_NAME>;
+          }
+    *)
+
     in
+
     [
       {
         name = "health_check";
