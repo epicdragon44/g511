@@ -136,6 +136,7 @@ let json_parser_tests =
         [ "The addition of 7 + 9 equals 16" ]
         (json_parser parsed_body) );
   ]
+
 let create_weather_url_test_helper api_key location expected _ =
   let r = create_weather_url api_key location in
   let res = Uri.to_string r in
@@ -240,6 +241,7 @@ let test_pp_unit_conv =
     "test_pp_unit_conv_nonfinite_amt" >:: test_pp_unit_conv_nonfinite_amt;
     "test_pp_unit_conv_empty_unit" >:: test_pp_unit_conv_empty_unit;
   ]
+
 let create_weather_url_tests =
   [
     "create_weather_url"

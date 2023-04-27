@@ -1,5 +1,9 @@
 # Bocaml
 
+<img src="logo.png"
+     alt="Bocaml"
+     style="float: left; margin: 0 5rem 1rem 0; width: 256px;" />
+
 This is the monorepo for a little Telegram chat-bot named Bo, after the Ithaca Bo Burger. Implemented in OCaml.
 
 ### Contributors
@@ -8,6 +12,8 @@ This is the monorepo for a little Telegram chat-bot named Bo, after the Ithaca B
 -   Ryan Lee
 -   Ken Chiem
 -   Anthony Huang
+
+<br />
 
 # Documentation
 
