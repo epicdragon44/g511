@@ -26,6 +26,11 @@ open Yojson.Safe.Util
     @precond [amt] must be a float; [from_unit] and [to_unit] must be strings and among the supported units of measurements
     @postcond Return type is float *)
 let conv_helper amt from_unit to_unit =
+  (* enforce preconds *)
+  if not (Float.is_finite amt) then
+    failwith "amt and converted_amt should be finite floats";
+  if not (String.length from_unit > 0 && String.length to_unit > 0) then
+    failwith "from_unit and to_unit should be non-empty strings";
   let conversion_factor =
     match (from_unit, to_unit) with
     | "m", "ft" -> 3.28084
@@ -69,6 +74,11 @@ let conv_helper amt from_unit to_unit =
     @precond [amt] and [converted_amt] are floats; [from_unit] and [to_unit] are strings
     @postcond return type is a string *)
 let pp_unit_conv amt from_unit to_unit converted_amt =
+  (* enforce preconds *)
+  if not (Float.is_finite amt && Float.is_finite converted_amt) then
+    failwith "amt and converted_amt should be finite floats";
+  if not (String.length from_unit > 0 && String.length to_unit > 0) then
+    failwith "from_unit and to_unit should be non-empty strings";
   Printf.sprintf "%g %s = %g %s" amt from_unit converted_amt to_unit
 
 (* Currency Converter Helpers *)
