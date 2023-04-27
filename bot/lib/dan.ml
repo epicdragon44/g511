@@ -15,5 +15,23 @@
    - an example of how to use it
    Example in lib.ml
 
-   Then, TEST each one. This should be similar to how you did server/lib/<ur name>.ml
+   Then, TEST each one. Write unit tests in bot/test/main.ml using OUnit.
+
+   This should be similar to how you did server/lib/<ur name>.ml
 *)
+
+(** Echoes a string back to you.
+
+      Precondition: None.
+      Postcondition: The string is the same as the string passed in.
+
+      @param msg The string to echo.
+
+      @return The string that was passed in.
+
+      @example
+      {[
+        echo "hello" = "hello"
+      ]}
+*)
+let echo (msg : string) = msg
