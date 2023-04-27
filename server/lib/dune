@@ -1,7 +1,7 @@
 (library
  (name server)
  (public_name server.library)
- (libraries curly ounit2 cohttp lwt yojson cohttp-lwt))
+ (libraries curly ounit2 cohttp lwt yojson cohttp-lwt-unix opium))
 
 (env
  (dev
