@@ -1,7 +1,7 @@
-include Dan
 include Ken
 include Ryan
 include Ant
+include Dan
 
 (** Removes the first word of a string.
 

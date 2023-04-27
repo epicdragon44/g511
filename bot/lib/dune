@@ -1,6 +1,7 @@
 (library
  (name bot)
- (public_name bot.library))
+ (public_name bot.library)
+ (libraries cohttp lwt yojson cohttp-lwt cohttp-lwt-unix))
 
 (env
  (dev

@@ -6,22 +6,20 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 
 ## Table of Contents
 
-1. [Build the Code](#build-the-code)
+1. [Run the Code](#run-the-code)
 2. [Test the Code](#test-the-code)
 3. [Contribute Code](#contribute-code)
-4. [Cross-reference the Server API](#cross-reference-the-server-api)
-5. [Manage Dependencies](#manage-dependencies)
-6. [Running the Code](#running-the-code)
-7. [Submissions](#submissions)
+4. [Interact with the Bot](#interact-with-the-bot)
+5. [Helping with Submissions](#helping-with-submissions)
 
-## Build the Code
+## Run the Code
 
-To start:
+### Start the Project
 
 -   `make build` will build the bot and server, as well as format the code. This might help with red squiggly lines everywhere. Run this before you start working!
 -   `make run` will start the server on port 9000 and the bot on port 9001.
 
-To stop:
+### Stop the Project
 
 -   `make kill` will kill the bot and the server (terminates all processes on ports 9000 and 9001).
 -   `make clean` will remove all build artifacts.
@@ -31,9 +29,11 @@ You can test the server via Postman. Checkout **Server API** below.
 
 ## Test the Code
 
--   `make test` will run all the tests in server and bot (using OUnit). Expect to see two OKs -- one for the bot and one for the server!
+First, [start the project](#start-the-project).
 
-### Contribute Code
+Then, run `make test`. This will run all the tests in server and bot (using OUnit). Expect to see two OKs -- one for the bot and one for the server!
+
+## Contribute Code
 
 Edit these two files to get started!
 
@@ -50,13 +50,13 @@ This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
 
-## Running the Code
+## Interact with the Bot
 
-Assuming the code is built and running on a server somewhere, you can interact with the bot on Telegram `@bocaml-beta-1`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
+Assuming you've [started the project](#start-the-project), you can interact with the bot on Telegram `@bocaml-beta-1`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
 
 If you want to more directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line. Check out **Server API** above for the endpoints.
 
-### Submissions
+## Helping with Submissions
 
 If you're a grader, you might be interested in this!
 

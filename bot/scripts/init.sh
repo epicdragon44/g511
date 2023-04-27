@@ -10,3 +10,11 @@ fi
 
 opam install -y telegraml
 opam install -y dotenv
+
+opam install -y cohttp
+
+opam install -y cohttp-lwt-unix
+
+opam install -y yojson
+
+opam install -y ppx_lwt

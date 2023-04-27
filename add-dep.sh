@@ -17,6 +17,7 @@ if [ -f $filename ]; then
             echo "Dependency already in init.sh"
       else
             # If the dependency is not in the file, add it
+            echo "" >> $filename
             echo "opam install -y $usrdep" >> $filename
       fi
 else
