@@ -91,24 +91,12 @@ let remind_me_handler req =
 let get_weather_handler req =
   let location = Router.param req "location" in
   let api_key = "2978b8fab18e4db495bf9b5a423d4f0d" in
-  let url =
-    Uri.of_string
-      (Printf.sprintf
-         "http://api.weatherstack.com/current?access_key=%s&query=%s" api_key
-         location)
-  in
+  let url = create_weather_url api_key location in
   Cohttp_lwt_unix.Client.get url >>= fun (_, body) ->
   body |> Cohttp_lwt.Body.to_string >>= fun body_str ->
   let json = Yojson.Safe.from_string body_str in
-  let weather =
-    Yojson.Safe.Util.(
-      json |> member "current"
-      |> member "weather_descriptions"
-      |> to_list |> List.hd |> to_string)
-  in
-  let response_body =
-    Printf.sprintf "The weather in %s is %s." location weather
-  in
+  let weather = extract_weather_description json in
+  let response_body = get_response_body location weather in
   Opium.Response.of_plain_text response_body |> Lwt.return
 
 (** Translate a given string.
@@ -116,225 +104,24 @@ let get_weather_handler req =
       [Router.param req "from"] is the language to translate from.
       [Router.param req "to"] is the language to translate to.
   *)
+
 let translate_handler req =
   let input = Router.param req "string" in
   let lang_from = Router.param req "from" in
-  let lang_from_match =
-    match lang_from with
-    | "Azerbaijani" -> "az"
-    | "Albanian" -> "sq"
-    | "Amharic" -> "am"
-    | "English" -> "en"
-    | "Arabic" -> "ar"
-    | "Armenian" -> "hy"
-    | "Afrikaans" -> "af"
-    | "Basque" -> "eu"
-    | "Bashkir" -> "ba"
-    | "Belarusian" -> "be"
-    | "Bengal" -> "bn"
-    | "Burmese" -> "my"
-    | "Bulgarian" -> "bg"
-    | "Bosnian" -> "bs"
-    | "Welsh" -> "cy"
-    | "Hungarian" -> "hu"
-    | "Vietnamese" -> "vi"
-    | "Haitian" -> "ht"
-    | "Galician" -> "gl"
-    | "Dutch" -> "nl"
-    | "Hill Mari" -> "mrj"
-    | "Greek" -> "el"
-    | "Georgian" -> "ka"
-    | "Gujarati" -> "gu"
-    | "Danish" -> "da"
-    | "Hebrew" -> "he"
-    | "Yiddish" -> "yi"
-    | "Indonesian" -> "id"
-    | "Irish" -> "ga"
-    | "Italian" -> "it"
-    | "Icelandic" -> "is"
-    | "Spanish" -> "es"
-    | "Kazakh" -> "kk"
-    | "Kannada" -> "kn"
-    | "Catalan" -> "ca"
-    | "Kirghiz" -> "ky"
-    | "Chinese" -> "zh"
-    | "Korean" -> "ko"
-    | "Xhosa" -> "xh"
-    | "Khmer" -> "km"
-    | "Laotian" -> "lo"
-    | "Latin" -> "la"
-    | "Latvian" -> "lv"
-    | "Lithuanian" -> "lt"
-    | "Luxembourg" -> "lb"
-    | "Malagasy" -> "mg"
-    | "Malay" -> "ms"
-    | "Malayalam" -> "ml"
-    | "Maltese" -> "mt"
-    | "Macedonian" -> "mk"
-    | "Maori" -> "mi"
-    | "Marathi" -> "mr"
-    | "Mari" -> "mhr"
-    | "Mongolian" -> "mn"
-    | "German" -> "de"
-    | "Nepalese" -> "ne"
-    | "Norwegian" -> "no"
-    | "Punjabi" -> "pa"
-    | "Papiamento" -> "pap"
-    | "Persian" -> "fa"
-    | "Polish" -> "pl"
-    | "Portuguese" -> "pt"
-    | "Romanian" -> "ro"
-    | "Russian" -> "ru"
-    | "Cebuano" -> "ceb"
-    | "Serbian" -> "sr"
-    | "Sinhalese" -> "si"
-    | "Slovak" -> "sk"
-    | "Slovenian" -> "sl"
-    | "Swahili" -> "sw"
-    | "Sundanese" -> "su"
-    | "Tajik" -> "tg"
-    | "Thai" -> "th"
-    | "Tagalog" -> "tl"
-    | "Tamil" -> "ta"
-    | "Tartar" -> "tt"
-    | "Telugu" -> "te"
-    | "Turkish" -> "tr"
-    | "Udmurt" -> "udm"
-    | "Uzbek" -> "uz"
-    | "Ukrainian" -> "uk"
-    | "Urdu" -> "ur"
-    | "Finnish" -> "fi"
-    | "French" -> "fr"
-    | "Hindi" -> "hi"
-    | "Croatian" -> "hr"
-    | "Czech" -> "cs"
-    | "Swedish" -> "sv"
-    | "Scottish" -> "gd"
-    | "Estonian" -> "et"
-    | "Esperanto" -> "eo"
-    | "Javanese" -> "jv"
-    | "Japanese" -> "ja"
-    | _ -> "unsupported"
-  in
+  let lang_from_match = lang_matcher lang_from in
   let lang_to = Router.param req "to" in
-  let lang_to_match =
-    match lang_to with
-    | "Azerbaijani" -> "az"
-    | "Albanian" -> "sq"
-    | "Amharic" -> "am"
-    | "English" -> "en"
-    | "Arabic" -> "ar"
-    | "Armenian" -> "hy"
-    | "Afrikaans" -> "af"
-    | "Basque" -> "eu"
-    | "Bashkir" -> "ba"
-    | "Belarusian" -> "be"
-    | "Bengal" -> "bn"
-    | "Burmese" -> "my"
-    | "Bulgarian" -> "bg"
-    | "Bosnian" -> "bs"
-    | "Welsh" -> "cy"
-    | "Hungarian" -> "hu"
-    | "Vietnamese" -> "vi"
-    | "Haitian" -> "ht"
-    | "Galician" -> "gl"
-    | "Dutch" -> "nl"
-    | "Hill Mari" -> "mrj"
-    | "Greek" -> "el"
-    | "Georgian" -> "ka"
-    | "Gujarati" -> "gu"
-    | "Danish" -> "da"
-    | "Hebrew" -> "he"
-    | "Yiddish" -> "yi"
-    | "Indonesian" -> "id"
-    | "Irish" -> "ga"
-    | "Italian" -> "it"
-    | "Icelandic" -> "is"
-    | "Spanish" -> "es"
-    | "Kazakh" -> "kk"
-    | "Kannada" -> "kn"
-    | "Catalan" -> "ca"
-    | "Kirghiz" -> "ky"
-    | "Chinese" -> "zh"
-    | "Korean" -> "ko"
-    | "Xhosa" -> "xh"
-    | "Khmer" -> "km"
-    | "Laotian" -> "lo"
-    | "Latin" -> "la"
-    | "Latvian" -> "lv"
-    | "Lithuanian" -> "lt"
-    | "Luxembourg" -> "lb"
-    | "Malagasy" -> "mg"
-    | "Malay" -> "ms"
-    | "Malayalam" -> "ml"
-    | "Maltese" -> "mt"
-    | "Macedonian" -> "mk"
-    | "Maori" -> "mi"
-    | "Marathi" -> "mr"
-    | "Mari" -> "mhr"
-    | "Mongolian" -> "mn"
-    | "German" -> "de"
-    | "Nepalese" -> "ne"
-    | "Norwegian" -> "no"
-    | "Punjabi" -> "pa"
-    | "Papiamento" -> "pap"
-    | "Persian" -> "fa"
-    | "Polish" -> "pl"
-    | "Portuguese" -> "pt"
-    | "Romanian" -> "ro"
-    | "Russian" -> "ru"
-    | "Cebuano" -> "ceb"
-    | "Serbian" -> "sr"
-    | "Sinhalese" -> "si"
-    | "Slovak" -> "sk"
-    | "Slovenian" -> "sl"
-    | "Swahili" -> "sw"
-    | "Sundanese" -> "su"
-    | "Tajik" -> "tg"
-    | "Thai" -> "th"
-    | "Tagalog" -> "tl"
-    | "Tamil" -> "ta"
-    | "Tartar" -> "tt"
-    | "Telugu" -> "te"
-    | "Turkish" -> "tr"
-    | "Udmurt" -> "udm"
-    | "Uzbek" -> "uz"
-    | "Ukrainian" -> "uk"
-    | "Urdu" -> "ur"
-    | "Finnish" -> "fi"
-    | "French" -> "fr"
-    | "Hindi" -> "hi"
-    | "Croatian" -> "hr"
-    | "Czech" -> "cs"
-    | "Swedish" -> "sv"
-    | "Scottish" -> "gd"
-    | "Estonian" -> "et"
-    | "Esperanto" -> "eo"
-    | "Javanese" -> "jv"
-    | "Japanese" -> "ja"
-    | _ -> "unsupported"
-  in
-  let api_key =
-    "trnsl.1.1.20230317T192942Z.38aa007e66112d27.70023d1d131998c0c80fd04ef3c38c5024a7068c"
-  in
+  let lang_to_match = lang_matcher lang_to in
+  let api_key = api_key_provider () in
   let url =
-    Uri.of_string
-      (Printf.sprintf
-         "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&text=%s&lang=%s-%s"
-         api_key input lang_from_match lang_to_match)
+    translation_url_creator api_key input lang_from_match lang_to_match
   in
-  Cohttp_lwt_unix.Client.get url >>= fun (_, body) ->
-  body |> Cohttp_lwt.Body.to_string >>= fun body_str ->
-  let json = Yojson.Safe.from_string body_str in
-  let translation =
-    Yojson.Safe.Util.(json |> member "text" |> to_list |> List.hd |> to_string)
-  in
-  let response_body = Printf.sprintf "Translation: %s" translation in
-  Opium.Response.of_plain_text response_body |> Lwt.return
+  translation_get_request url >>= fun (_, body) ->
+  extract_translation_from_body body >>= fun translation ->
+  translation_response_builder translation |> Lwt.return
 
 (** Calculate the math expression in a given string.
       [Router.param req "expr"] is the string to calculate.
-  *)
+
 
 let remove_space item lst =
   List.fold_right (fun h acc -> if h <> item then h :: acc else acc) lst []
@@ -362,7 +149,7 @@ let calculate_handler req =
       0
   in
   let answer_formatted = Printf.sprintf "Answer: %s" (string_of_int answer) in
-  Opium.Response.of_plain_text answer_formatted |> Lwt.return
+  Opium.Response.of_plain_text answer_formatted |> Lwt.return *)
 
 (** Convert between units of measurement.
       [Router.param req "amt"] is the amount to convert.
@@ -461,7 +248,7 @@ let time_handler req =
       [Router.param req "initialize"] starts the game if true.
       [Router.param req "player"] is the marker type of the player (i.e. "x" or "o").
       [Router.param req "pos"] is the position the player wants to place their marker.
-  *)
+
 
 type game = { current_board : string list list }
 
@@ -607,6 +394,7 @@ let ai_t_game_handler req game =
   let board = (step req game).current_board in
   let ai_text_board = text_board board in
   Opium.Response.of_plain_text ai_text_board |> Lwt.return
+  *)
 
 (** Get a random number between a low and high bound, inclusive.
       [Router.param req "low"] is the low bound.
@@ -634,7 +422,7 @@ let _ =
   |> App.get "/remind/:msg/:id/:time" remind_me_handler
   |> App.get "/weather/:location" get_weather_handler
   |> App.get "/translate/:string/:from/:to" translate_handler
-  |> App.get "/calculate/:expr" calculate_handler
+  (*|> App.get "/calculate/:expr" calculate_handler *)
   (* |> App.get "/ai_t_game_handler/:initialize/:player/:pos" ai_t_game_handler *)
   |> App.get "/rng/:low/:high" rng_handler
   |> App.get "/coinflip" coin_flip_handler
