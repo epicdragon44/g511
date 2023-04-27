@@ -54,8 +54,33 @@ let test_conv_helper =
     "test_conv_helper_unsupported_units" >:: test_conv_helper_unsupported_units;
   ]
 
+let test_pp_unit_conv_m_to_cm _ =
+  assert_equal "1.5 m = 150 cm" (pp_unit_conv 1.5 "m" "cm" 150.0)
+
+let test_pp_unit_conv_usd_to_cad _ =
+  assert_equal "10 USD = 12.5 CAD" (pp_unit_conv 10.0 "USD" "CAD" 12.5)
+
+let test_pp_unit_conv_nonfinite_amt _ =
+  assert_raises (Failure "amt and converted_amt should be finite floats")
+    (fun () -> pp_unit_conv nan "m" "cm" 150.0)
+
+let test_pp_unit_conv_empty_unit _ =
+  assert_raises (Failure "from_unit and to_unit should be non-empty strings")
+    (fun () -> pp_unit_conv 1.5 "" "cm" 150.0)
+
+let test_pp_unit_conv =
+  [
+    "test_pp_unit_conv_m_to_cm" >:: test_pp_unit_conv_m_to_cm;
+    "test_pp_unit_conv_usd_to_cad" >:: test_pp_unit_conv_usd_to_cad;
+    "test_pp_unit_conv_nonfinite_amt" >:: test_pp_unit_conv_nonfinite_amt;
+    "test_pp_unit_conv_empty_unit" >:: test_pp_unit_conv_empty_unit;
+  ]
+
 let suite =
   "test suite for all server functions"
-  >::: List.flatten [ rand_btwn_tests; coin_flip_tests; test_conv_helper ]
+  >::: List.flatten
+         [
+           rand_btwn_tests; coin_flip_tests; test_conv_helper; test_pp_unit_conv;
+         ]
 
 let _ = run_test_tt_main suite
