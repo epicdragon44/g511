@@ -37,6 +37,26 @@ let lang_matcher_test_helper lang expected _ =
   let r = lang_matcher lang in
   assert_equal expected r
 
+let translation_get_request_test_helper url expected_status _ =
+  let open Lwt.Infix in
+  let uri = Uri.of_string url in
+  Lwt_main.run
+    ( translation_get_request uri >>= fun (response, _) ->
+      let status_code =
+        Cohttp.Response.status response |> Cohttp.Code.code_of_status
+      in
+      Lwt.return (assert_equal expected_status status_code) )
+
+let extract_translation_from_body_test_helper body expected _ =
+  let r = extract_translation_from_body (Cohttp_lwt.Body.of_string body) in
+  let res = Lwt_main.run r in
+  assert_equal expected res
+
+let translation_response_builder_test_helper translation expected _ =
+  let r = translation_response_builder translation in
+  let res = r |> Opium.Response.to_plain_text |> Lwt_main.run in
+  assert_equal expected res
+
 let rand_btwn_tests = [ rand_btwn_test_helper 0 10; rand_btwn_test_helper 1 1 ]
 let coin_flip_tests = [ coin_flip_test_helper () ]
 
@@ -75,26 +95,6 @@ let lang_matcher_tests =
     "lang_matcher"
     >:: lang_matcher_test_helper "UnsupportedLanguage" "unsupported";
   ]
-
-let translation_get_request_test_helper url expected_status _ =
-  let open Lwt.Infix in
-  let uri = Uri.of_string url in
-  Lwt_main.run
-    ( translation_get_request uri >>= fun (response, _) ->
-      let status_code =
-        Cohttp.Response.status response |> Cohttp.Code.code_of_status
-      in
-      Lwt.return (assert_equal expected_status status_code) )
-
-let extract_translation_from_body_test_helper body expected _ =
-  let r = extract_translation_from_body (Cohttp_lwt.Body.of_string body) in
-  let res = Lwt_main.run r in
-  assert_equal expected res
-
-let translation_response_builder_test_helper translation expected _ =
-  let r = translation_response_builder translation in
-  let res = r |> Opium.Response.to_plain_text |> Lwt_main.run in
-  assert_equal expected res
 
 let translation_get_request_tests =
   [
