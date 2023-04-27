@@ -76,6 +76,46 @@ let lang_matcher_tests =
     >:: lang_matcher_test_helper "UnsupportedLanguage" "unsupported";
   ]
 
+let translation_get_request_test_helper url expected_status _ =
+  let open Lwt.Infix in
+  let uri = Uri.of_string url in
+  Lwt_main.run
+    ( translation_get_request uri >>= fun (response, _) ->
+      let status_code =
+        Cohttp.Response.status response |> Cohttp.Code.code_of_status
+      in
+      Lwt.return (assert_equal expected_status status_code) )
+
+let extract_translation_from_body_test_helper body expected _ =
+  let r = extract_translation_from_body (Cohttp_lwt.Body.of_string body) in
+  let res = Lwt_main.run r in
+  assert_equal expected res
+
+let translation_response_builder_test_helper translation expected _ =
+  let r = translation_response_builder translation in
+  let res = r |> Opium.Response.to_plain_text |> Lwt_main.run in
+  assert_equal expected res
+
+let translation_get_request_tests =
+  [
+    "translation_get_request"
+    >:: translation_get_request_test_helper "https://example.com" 404;
+  ]
+
+let extract_translation_from_body_tests =
+  [
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Bonjour\"]}"
+          "Bonjour";
+  ]
+
+let translation_response_builder_tests =
+  [
+    "translation_response_builder"
+    >:: translation_response_builder_test_helper "Bonjour"
+          "Translation: Bonjour";
+  ]
+
 let suite =
   "test suite for all server functions"
   >::: List.flatten
@@ -87,6 +127,9 @@ let suite =
            extract_weather_description_tests;
            translation_url_creator_tests;
            lang_matcher_tests;
+           translation_get_request_tests;
+           extract_translation_from_body_tests;
+           translation_response_builder_tests;
          ]
 
 let _ = run_test_tt_main suite
