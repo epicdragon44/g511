@@ -17,10 +17,15 @@ open Yojson.Safe.Util
 (* ========= HELPER FUNCTIONS: Move functionality from bin/main.ml  ========= *)
 
 (** [header_creator key] is a function that returns a Cohttp.Header.t type that is sent in an API request
+
     @param key The OpenAI key used to access the chatbot
+
     @return The Cohttp.Header.t type that will be sent as a header in the POST request
+
     @precond [key] must be a non-empty string
-    @postcond The result is of type Cohttp.Header.t *)
+
+    @postcond The result is of type Cohttp.Header.t
+     *)
 let header_creator key =
   if String.length key > 0 then
     Cohttp.Header.of_list
@@ -29,41 +34,52 @@ let header_creator key =
       ]
   else failwith "Invalid api key"
 
-(** [param_creator req] is a function that returns a Assoc object, which is the parameters for the API request
-    @param [req] The message that the user wants to send to the chatbot
+(** [param_creator msg] is a function that returns a Assoc object, which is the parameters for the API request
+
+    @param [msg] The message that the user wants to send to the chatbot
+
     @return The Assoc type that will be sent as a parameter in the POST request
-    @precond [req] must be a non-empty Request.t object
-    @postcond The result is of type Assoc *)
-let param_creator req =
-  `Assoc
-    [
-      ("model", `String "gpt-3.5-turbo");
-      ( "messages",
-        `List
-          [
-            `Assoc
-              [
-                ("role", `String "user");
-                ("content", `String (Router.param req "msg"));
-              ];
-          ] );
-    ]
+
+    @precond [msg] must be a non-empty string
+
+    @postcond The result is of type Assoc
+    *)
+let param_creator msg =
+  if String.length msg > 0 then
+    `Assoc
+      [
+        ("model", `String "gpt-3.5-turbo");
+        ( "messages",
+          `List
+            [ `Assoc [ ("role", `String "user"); ("content", `String msg) ] ] );
+      ]
+  else failwith "Error: Empty Message"
 
 (** [chatbot_postrequest header param endpoint] is a function that makes a POST request
+
     @param [header] [param] [endpoint] The message that the user wants to send to the chatbot
+
     @return Returns a pair with the Response and Body of the request
+
     @precond [header] [param] and [endpoint] must be non-empty
-    @postcond The result is a pair of the Response and Body of the request that was made *)
+
+    @postcond The result is a pair of the Response and Body of the request that was made
+     *)
 let chatbot_postrequest header param endpoint =
   Cohttp_lwt_unix.Client.post ~headers:header
     ~body:(`String (Yojson.Safe.to_string param))
     endpoint
 
 (** [json_parser parsed_body] is a function that parses the body of the made request into a Yojson
+
     @param [parsed_body] Is the string version of the body
+
     @return Returns the json version of the string
+
     @precond [parsed_body] is a non-empty string
-    @postcond Creates a string list version of the string body *)
+
+    @postcond Creates a string list version of the string body
+     *)
 let json_parser parsed_body =
   if String.length parsed_body > 0 then
     parsed_body |> Yojson.Basic.from_string
@@ -77,10 +93,15 @@ let json_parser parsed_body =
   else failwith "Invalid Input: Empty body"
 
 (** [chatbot_body_handler parsed_body] is a function that parses the body and returns it in a readable format
+
     @param [parsed_body] Is the string version of the body
+
     @return Outputs a readable version of the body
+
     @precond [parsed_body] is a string
-    @postcond Outputs a readable version of the body *)
+
+    @postcond Outputs a readable version of the body 
+    *)
 let chatbot_body_handler parsed_body =
   let json = json_parser parsed_body in
   match json with
@@ -88,10 +109,15 @@ let chatbot_body_handler parsed_body =
   | h :: _ -> Printf.sprintf "%s\n" h |> Opium.Response.of_plain_text
 
 (** [chatbot_error_handler resp] is a function that handles errors from the chatbot
+
     @param [resp] Is the response from the chatbot's POST request
+
     @return Outputs an error message of Response.t
+
     @precond [resp] is a Cohttp.Response.t type
-    @postcond Outputs an error message *)
+
+    @postcond Outputs an error message
+     *)
 let chatbot_error_handler resp =
   Printf.sprintf "Error: %s\n"
     (Cohttp_lwt.Response.status resp |> Cohttp.Code.string_of_status)
@@ -99,9 +125,10 @@ let chatbot_error_handler resp =
 
 (* let general_chat_handler openai_key req =
    (* One test that can be done is to test a helper function that parses json files? *)
+   let msg = Router.param req "msg" in
    let endpoint = Uri.of_string "https://api.openai.com/v1/chat/completions" in
    let header = header_creator openai_key in
-   let param = param_creator req in
+   let param = param_creator msg in
    chatbot_postrequest header param endpoint >>= fun (resp, body) ->
    (* This is to handle any error response code *)
    match Cohttp_lwt.Response.status resp with
