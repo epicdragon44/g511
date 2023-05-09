@@ -19,3 +19,5 @@ open Helper
     - Then I wrote some unit tests for it in [bot/test/main.ml].
     - Then I followed the instructions in [bot/bin/main.ml] to connect it to the Telegram bot.
 *)
+
+let hi = "hello"
