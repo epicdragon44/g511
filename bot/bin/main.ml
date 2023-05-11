@@ -21,31 +21,37 @@ module MyBot = Mk (struct
   open Chat
 
   (* open User *)
+
   open Command
   open Message
 
   (* open UserProfilePhotos *)
+
   include Telegram.BotDefaults
 
   let token = get_env "BOT_TOKEN"
   let command_postfix = Some "bocaml-beta-1"
 
   let commands =
+
     let open Telegram.Actions in
     let health_check { chat = { id; _ }; _ } =
       send_message ~chat_id:id "Hi there!"
+
     and echome input =
       match input with
       | { chat; text = Some text; _ } ->
           text |> remove_first_word_of |> echo
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage of /echo"
+
     and coinflipme input =
       match input with
       | { chat; text = Some text; _ } ->
           text |> remove_first_word_of |> flip_coin
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
     and rngme input =
         let first_member (ls: string list) =
             match ls with
@@ -66,6 +72,42 @@ module MyBot = Mk (struct
           rng_btwn first second 
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
+    and weatherme input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          text |> remove_first_word_of |> get_weather
+          |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
+    and translateme input =
+    let parse_translation_text text =  
+      match String.split_on_char ' ' text with
+      | _command :: lang_from :: lang_to :: text_to_translate_parts ->
+          let text_to_translate = String.concat " " text_to_translate_parts in
+          (lang_from, lang_to, text_to_translate)
+      | _ -> failwith "Invalid usage: /translate <from_lang> <to_lang> <text>"
+      in
+      match input with
+      | { chat; text = Some text; _ } ->
+          let lang_from, lang_to, text_to_translate = parse_translation_text text in
+          text_to_translate |> get_translate lang_from lang_to
+          |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+      
+      and ai_handler_me input =
+        match input with
+        | { chat; text = Some text; _ } ->
+            let params = String.split_on_char ' ' text in
+            let _ = List.hd params in 
+            let action, player, pos =
+              match List.tl params with
+              | action :: player :: pos :: [] -> action, player, int_of_string pos
+              | _ -> failwith "Invalid parameters"
+            in
+            get_ai_text action player pos
+            |> send_message ~chat_id:chat.id "%s"
+        | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
 
     (** Secondary TODO: For each and every server function you wrote:
     
@@ -111,7 +153,25 @@ module MyBot = Mk (struct
         description = "Generate a random number between two numbers";
         enabled = true;
         run = rngme;
-      }
+      };
+      {
+        name = "weather";
+        description = "Get the current weather for a specified location";
+        enabled = true;
+        run = weatherme;
+      };
+      {
+        name = "translate";
+        description = "Get the translation of a body of text from one language to another";
+        enabled = true;
+        run = translateme;
+      };
+      {
+        name = "play";
+        description = "Play a game of Tic Tac Toe against an AI. Use '/play_tic_tac_toe start x' to start a new game as X, or '/play_tic_tac_toe move x 5' to place your X at position 5.";
+        enabled=true;
+        run = ai_handler_me;
+      };
     ]
 end)
 

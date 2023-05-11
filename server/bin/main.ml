@@ -251,124 +251,6 @@ let time_handler req =
       [Router.param req "pos"] is the position the player wants to place their marker.
   *)
 
-(*Helper function for representing game board in text*)
-let text_board board =
-  let row_strings =
-    List.map
-      (fun row ->
-        "|"
-        ^ String.concat "|" (List.map (fun x -> if x = "_" then " " else x) row)
-        ^ "|\n")
-      board
-  in
-  String.concat "" row_strings
-
-open Yojson.Basic.Util
-
-let other_player player = if player = "x" then "o" else "x"
-
-(*Return true if there is a winner, else false*)
-let check_winner board_str player =
-  let board_json = Yojson.Basic.from_string board_str in
-  let board =
-    board_json |> member "board" |> to_list
-    |> List.map (fun row -> to_list row |> List.map to_string)
-  in
-  let check_row row = List.for_all (( = ) player) row in
-  let check_col col =
-    List.for_all (( = ) player) (List.map (fun row -> List.nth row col) board)
-  in
-  let check_diag1 () =
-    List.for_all2 (fun i row -> List.nth row i = player) [ 0; 1; 2 ] board
-  in
-  let check_diag2 () =
-    List.for_all2 (fun i row -> List.nth row (2 - i) = player) [ 0; 1; 2 ] board
-  in
-  List.exists check_row board
-  || List.exists (fun i -> check_col i) [ 0; 1; 2 ]
-  || check_diag1 () || check_diag2 ()
-
-(*Check what positions are not already occupied by a marker*)
-let empty_positions board =
-  let positions = ref [] in
-  for i = 0 to 2 do
-    for j = 0 to 2 do
-      let cell = List.nth (List.nth board i) j in
-      if cell <> "x" && cell <> "o" then positions := (i, j) :: !positions
-    done
-  done;
-  !positions
-
-(*Check what positions are not already occupied by a marker,
-   and if the input position is a valid play*)
-let is_valid_position board pos =
-  let row = List.nth board (fst pos) in
-  let cell = List.nth row (snd pos) in
-  cell <> "x" && cell <> "o"
-
-(*Translates the board to a textual representation*)
-let string_to_board board_str =
-  let board_json = Yojson.Basic.from_string board_str in
-  board_json |> member "board" |> to_list
-  |> List.map (fun row -> to_list row |> List.map to_string)
-
-let board_to_string board =
-  let board_json =
-    `Assoc
-      [
-        ( "board",
-          `List
-            (List.map
-               (fun row -> `List (List.map (fun cell -> `String cell) row))
-               board) );
-      ]
-  in
-  Yojson.Basic.to_string board_json
-
-(*OCaml implementation of minimax algorithm,
-   dictating the AI's moveset by finding best possible move in the worst
-   possible situation*)
-let rec minimax board_str player =
-  let board = string_to_board board_str in
-  if check_winner board_str (other_player player) then (-1, (0, 0))
-  else if empty_positions board = [] then (0, (0, 0))
-  else
-    let rec aux best_score best_move = function
-      | [] -> (best_score, best_move)
-      | (i, j) :: tail ->
-          let row = List.nth board i in
-          let updated_row =
-            List.mapi (fun k cell -> if k = j then player else cell) row
-          in
-          let updated_board =
-            List.mapi (fun k row -> if k = i then updated_row else row) board
-          in
-          let updated_board_str = board_to_string updated_board in
-          let score, _ = minimax updated_board_str (other_player player) in
-          let score = -score in
-          if score > best_score then aux score (i, j) tail
-          else aux best_score best_move tail
-    in
-    aux min_int (0, 0) (empty_positions board)
-
-let ai_move board player =
-  let _, best_move = minimax (board_to_string board) player in
-  best_move
-
-let mutable_game_board =
-  ref [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ]
-
-let reference_board () =
-  let reference = [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ] in
-  "Reference board:\n" ^ text_board reference
-
-let digit_to_position digit =
-  let row = (digit - 1) / 3 in
-  let col = (digit - 1) mod 3 in
-  (row, col)
-
-(*TTT game handler, compiles all of the above together and has the AI
-   interact with the user input*)
 let ai_t_game_handler req =
   let action = Router.param req "action" in
   if action = "start" then (
@@ -442,7 +324,7 @@ let _ =
   |> App.get "/weather/:location" get_weather_handler
   |> App.get "/translate/:string/:from/:to" translate_handler
      (*|> App.get "/calculate/:expr" calculate_handler *)
-  |> App.get "/ai_t_game_handler/:initialize/:player/:pos" ai_t_game_handler
+  |> App.get "/ai_t_game_handler/:action/:player/:pos" ai_t_game_handler
   |> App.get "/rng/:low/:high" rng_handler
   |> App.get "/coinflip" coin_flip_handler
   |> App.run_command
