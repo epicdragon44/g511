@@ -17,9 +17,26 @@ let rng_btwn_test_helper (min : int) (max : int) =
     && rng_btwn min max |> int_of_string <= max)
     ~printer:string_of_bool
 
+let weatherme_test_helper (input : string) (expected_output : string) =
+  "weatherme" >:: fun _ -> assert_equal expected_output (get_weather input)
+
+let translateme_test_helper (lang_from : string) (lang_to : string)
+    (input : string) (expected_output : string) =
+  "translateme" >:: fun _ ->
+  assert_equal expected_output (get_translate lang_from lang_to input)
+
+let ai_handler_me_test_helper (action : string) (player : string) (pos : int)
+    (expected_output : string) =
+  "ai_handler_me" >:: fun _ ->
+  assert_equal expected_output (get_ai_text action player pos)
+
 let echo_tests = [ echo_test_helper "echo" "echo"; echo_test_helper "" "" ]
 let coin_tests = [ flip_coin_test_helper () ]
 let rng_btwn_tests = [ rng_btwn_test_helper 0 10; rng_btwn_test_helper 1 1 ]
+let weatherme_tests = [ weatherme_test_helper "San Francisco" "Sunny" ]
+
+let translateme_tests =
+  [ translateme_test_helper "English" "Spanish" "Hello World" "Hola Mundo" ]
 
 let suite =
   "test suite for all bot functions"
