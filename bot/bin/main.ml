@@ -121,11 +121,11 @@ module MyBot = Mk (struct
         run = rngme;
       };
       {
-            name = "general_chat";
-            description = "<HUMAN_READABLE_DESCRIPTION>";
-            enabled=true;
-            run = general_chat;
-          }
+        name = "general_chat";
+        description = "Ask the bot any question and it will try to answer it";
+        enabled=true;
+        run = general_chat;
+      }
     ]
 end)
 
