@@ -67,6 +67,14 @@ module MyBot = Mk (struct
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
 
+    and general_chat input =
+          match input with
+          | { chat; text = Some text; _ } ->
+              text |> remove_first_word_of |> general_chat_handler_call
+              |> send_message ~chat_id:chat.id "%s"
+          | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
+
     (** Secondary TODO: For each and every server function you wrote:
     
       - Copy paste the following bit of code, fill in the <template bits>, and then paste it immediately above.
@@ -111,7 +119,13 @@ module MyBot = Mk (struct
         description = "Generate a random number between two numbers";
         enabled = true;
         run = rngme;
-      }
+      };
+      {
+            name = "general_chat";
+            description = "<HUMAN_READABLE_DESCRIPTION>";
+            enabled=true;
+            run = general_chat;
+          }
     ]
 end)
 
