@@ -24,6 +24,10 @@ Please, _please_ read this file carefully and in its entirety.
 
 -   `make doc` will generate documentation for the bot and server. If you're on Mac, it will also automatically open the docs in your browser for you. Otherwise, you can manually find the docs in `docs/index.html`.
 
+### Documentation Decisions
+
+We've documented our choices in regards to, well, documentation, at length in [DOC.md](DOC.md). If you're confused about things, please read that file.
+
 ### Project Structure
 
 This is important! The project is structured as a monorepo, with two subprojects: `bot/` and `server/`. Each subproject is a _self-contained OCaml project._
