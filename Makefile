@@ -33,7 +33,8 @@ kill :
 # Tests all the code and outputs the results to the console.
 
 test:
-	./test.sh
+	@echo "Testing..."
+	cd server && dune exec test/main.exe
 
 # Commands to help with submission.
 
