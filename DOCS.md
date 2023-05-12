@@ -8,22 +8,26 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 
 ## Table of Contents
 
-1. [Run the Code](#run-the-code)
-2. [Test the Code](#test-the-code)
-3. [Contribute Code](#contribute-code)
-4. [Interact with the Bot](#interact-with-the-bot)
-5. [Helping with Submissions](#helping-with-submissions)
+0. [Read the Docs](#read-the-docs)
+1. [Start the Project](#start-the-project)
+2. [Stop the Project](#stop-the-project)
+3. [Test the Project](#test-the-project)
+4. [Contribute Code](#contribute-code)
+5. [Interact with the Bot](#interact-with-the-bot)
+6. [Helping with Submissions](#helping-with-submissions)
 
 ---
 
-## Run the Code
+## Read the Docs
 
-### Start the Project
+-   `make doc` will generate documentation for the bot and server. If you're on Mac, it will also open the docs in your browser. Otherwise, you can find the docs in `docs/index.html`.
+
+## Start the Project
 
 -   `make build` will build the bot and server, as well as format the code. This might help with red squiggly lines everywhere. Run this before you start working!
 -   `make run` will start the server on port 9000 and the bot on port 9001.
 
-### Stop the Project
+## Stop the Project
 
 -   `make kill` will kill the bot and the server (terminates all processes on ports 9000 and 9001).
 -   `make clean` will remove all build artifacts.
@@ -31,9 +35,7 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 You can interact with the bot while the code is running on Telegram `@bocaml-beta-1`.
 You can test the server via Postman. Checkout **Server API** below.
 
----
-
-## Test the Code
+## Test the Project
 
 Simply run `make test`!
 

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Helper.html">
+<link rel="Up" href="index.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="Lib" rel="Chapter" href="Lib.html"><title>Lib</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Helper.html" title="Helper">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Lib.html">Lib</a></h1>
+
+<pre><span id="MODULELib"><span class="keyword">module</span> Lib</span>: <code class="code">sig</code> <a href="Lib.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>This is the interface for the Bot library, which contains all bot functionality.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="VALget_weather"><span class="keyword">val</span> get_weather</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Fetches the weather for a given location.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The weather condition of the provided location as a string.</li>
+</ul>
+</div>
+
+<pre><span id="VALget_translate"><span class="keyword">val</span> get_translate</span> : <code class="type">string -&gt; string -&gt; string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Translates a given string from one language to another.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The translated text.</li>
+</ul>
+</div>
+
+<pre><span id="VALget_ai_text"><span class="keyword">val</span> get_ai_text</span> : <code class="type">string -&gt; string -&gt; int -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Interacts with the AI Tic Tac Toe game handler.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The game board state as a string.</li>
+</ul>
+</div>
+
+<pre><span id="VALgeneral_chat_handler_call"><span class="keyword">val</span> general_chat_handler_call</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a string that is the response from the server when the user sends a message in the general chat handler.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The response from the server.</li>
+</ul>
+</div>
+
+<pre><span id="VALconvert_units"><span class="keyword">val</span> convert_units</span> : <code class="type">string -&gt; string -&gt; string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Converts a given amount from one unit of measurement to another.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The amount converted to the new unit of measurement.</li>
+</ul>
+</div>
+
+<pre><span id="VALconvert_curr"><span class="keyword">val</span> convert_curr</span> : <code class="type">string -&gt; string -&gt; string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Converts a given amount from one currency to another.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The amount converted to the new currency.</li>
+</ul>
+</div>
+
+<pre><span id="VALget_curr_time"><span class="keyword">val</span> get_curr_time</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the current time in a given timezone.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The current time in the requested timezone.</li>
+</ul>
+</div>
+
+<pre><span id="VALecho"><span class="keyword">val</span> echo</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Echoes a string back to you.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The string that was passed in.</li>
+</ul>
+</div>
+
+<pre><span id="VALflip_coin"><span class="keyword">val</span> flip_coin</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Flips a coin and returns the result.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The result of the coin flip.</li>
+</ul>
+</div>
+
+<pre><span id="VALrng_btwn"><span class="keyword">val</span> rng_btwn</span> : <code class="type">int -&gt; int -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a random number between the given range.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A random number between the given range.</li>
+</ul>
+</div>
+
+<pre><span id="VALremove_first_word_of"><span class="keyword">val</span> remove_first_word_of</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Removes the first word of a string.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the string is empty.</li>
+<li><b>Returns</b> The string with the first word removed.</li>
+</ul>
+</div>
+</body></html>

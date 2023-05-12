@@ -39,8 +39,8 @@ test:
 
 doc:
 	@echo "Generating documentation..."
-	cd bot && ocamldoc -html -d ../docs/bot
-	cd server && ocamldoc -html -d ../docs/server
+	cd bot && ocamldoc -html -d ../docs/bot lib/*.ml lib/*.mli
+	
 	sleep 3
 	open docs/index.html
 
