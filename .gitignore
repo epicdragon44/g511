@@ -9,6 +9,7 @@
 *.cmxa
 *.env
 **/.DS_Store
+.vscode/
 
 # ocamlbuild working directory
 _build/
