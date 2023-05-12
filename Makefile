@@ -6,7 +6,6 @@ initialize :
 	./init.sh
 
 install :
-	@echo "Calling the 'install dependency' script..."
 	./add-dep.sh
 
 # Custom scripts for development. Uses bash scripts located within scripts/ in each sub-repo for more granular control.
@@ -39,7 +38,6 @@ test:
 # Commands to help with submission.
 
 loc:
-	@echo "Counting lines of code..."
 	./loc.sh
 
 zip:
