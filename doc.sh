@@ -13,7 +13,7 @@ sleep 2
 echo "Generating documentation for server ..."
 
 cd server
-ocamldoc -html -d ../docs/server lib/*.mli
+ocamlfind ocamldoc -package cohttp,cohttp-lwt,lwt,rock,stdlib,uri,yojson -I _build -html -d ../docs/server lib/*.mli
 cd ..
 
 sleep 2

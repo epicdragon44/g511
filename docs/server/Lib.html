@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Lib" rel="Chapter" href="Lib.html"><title>Lib</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Lib.html">Lib</a></h1>
+
+<pre><span id="MODULELib"><span class="keyword">module</span> Lib</span>: <code class="code">sig</code> <a href="Lib.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>This is the interface for the Server library, which contains all server functionality.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="VALconv_helper"><span class="keyword">val</span> conv_helper</span> : <code class="type">float -&gt; string -&gt; string -&gt; float</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">conv_helper amt from_unit to_unit</code> is a function that returns a float that is the converted (amt) from from_unit to to_unit</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> a float that is the converted (amt) from from_unit to to_unit</li>
+</ul>
+</div>
+
+<pre><span id="VALpp_unit_conv"><span class="keyword">val</span> pp_unit_conv</span> : <code class="type">float -&gt; string -&gt; string -&gt; float -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">pp_unit_conv amt from_unit to_unit converted_amt</code> is a function that pretty prints a string for output</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> a string formatted as follows: "<code class="code">amt</code> <code class="code">from_unit</code> = <code class="code">converted_amt</code> <code class="code">to_unit</code>"</li>
+</ul>
+</div>
+
+<pre><span id="VALrand_btwn"><span class="keyword">val</span> rand_btwn</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info ">
+<div class="info-desc">
+<p>* <code class="code">rand_btwn low high</code> is a random integer between <code class="code">low</code> and <code class="code">high</code>, inclusive.
+  * Requires: <code class="code">low</code> &lt;= <code class="code">high</code>
+  * Example: <code class="code">rand_btwn 1 3</code> is either 1, 2, or 3.</p>
+</div>
+</div>
+
+<pre><span id="VALcoin_flip"><span class="keyword">val</span> coin_flip</span> : <code class="type">unit -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p>* <code class="code">coin_flip ()</code> is either "Heads" or "Tails".</p>
+</div>
+</div>
+
+<pre><span id="VALheader_creator"><span class="keyword">val</span> header_creator</span> : <code class="type">string -&gt; Cohttp.Header.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">header_creator key</code> is a function that returns a Cohttp.Header.t type that is sent in an API request</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The Cohttp.Header.t type that will be sent as a header in the POST request</li>
+</ul>
+</div>
+
+<pre><span id="VALparam_creator"><span class="keyword">val</span> param_creator</span> : <code class="type">string -&gt;<br>       [&gt; `Assoc of<br>            (string *<br>             [&gt; `List of [&gt; `Assoc of (string * [&gt; `String of string ]) list ] list<br>              | `String of string ])<br>            list ]</code></pre>
+<pre><span id="VALchatbot_postrequest"><span class="keyword">val</span> chatbot_postrequest</span> : <code class="type">Cohttp.Header.t -&gt;<br>       Yojson.Safe.t -&gt; Uri.t -&gt; (Cohttp.Response.t * Cohttp_lwt.Body.t) Lwt.t</code></pre>
+<pre><span id="VALjson_parser"><span class="keyword">val</span> json_parser</span> : <code class="type">string -&gt; string list</code></pre>
+<pre><span id="VALchatbot_body_handler"><span class="keyword">val</span> chatbot_body_handler</span> : <code class="type">string -&gt; Rock.Response.t</code></pre>
+<pre><span id="VALchatbot_error_handler"><span class="keyword">val</span> chatbot_error_handler</span> : <code class="type">Cohttp.Response.t -&gt; Rock.Response.t Lwt.t</code></pre>
+<pre><span id="VALcreate_weather_url"><span class="keyword">val</span> create_weather_url</span> : <code class="type">string -&gt; string -&gt; Uri.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_weather_url api_key location</code> is a function that creates a Uri for the weather API request</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A Uri for the weather API request</li>
+</ul>
+</div>
+
+<pre><span id="VALget_response_body"><span class="keyword">val</span> get_response_body</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_response_body location weather</code> is a function that creates a response body string</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A response body string</li>
+</ul>
+</div>
+
+<pre><span id="VALextract_weather_description"><span class="keyword">val</span> extract_weather_description</span> : <code class="type">Yojson.Safe.t -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">extract_weather_description json</code> is a function that extracts the weather description from the given JSON</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The weather description as a string</li>
+</ul>
+</div>
+
+<pre><span id="VALapi_key_provider"><span class="keyword">val</span> api_key_provider</span> : <code class="type">unit -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">api_key_provider ()</code> is a function that returns the API key for the Yandex Translate service.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The API key string</li>
+</ul>
+</div>
+
+<pre><span id="VALtranslation_url_creator"><span class="keyword">val</span> translation_url_creator</span> : <code class="type">string -&gt; string -&gt; string -&gt; string -&gt; Uri.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">translation_url_creator api_key input lang_from_match lang_to_match</code> is a function that creates a URL for the translation request</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A Uri.t type URL for the translation request</li>
+</ul>
+</div>
+
+<pre><span id="VALtranslation_get_request"><span class="keyword">val</span> translation_get_request</span> : <code class="type">Uri.t -&gt; (Cohttp.Response.t * Cohttp_lwt.Body.t) Lwt.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">translation_get_request url</code> is a function that makes a GET request to the given URL</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A pair containing the response and body of the GET request</li>
+</ul>
+</div>
+
+<pre><span id="VALextract_translation_from_body"><span class="keyword">val</span> extract_translation_from_body</span> : <code class="type">Cohttp_lwt.Body.t -&gt; string Lwt.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">extract_translation_from_body body</code> is a function that extracts the translation text from the response body</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The translated text as a string</li>
+</ul>
+</div>
+
+<pre><span id="VALtranslation_response_builder"><span class="keyword">val</span> translation_response_builder</span> : <code class="type">string -&gt; Rock.Response.t</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">translation_response_builder translation</code> is a function that builds an Opium.Response.t object containing the translation</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> An Opium.Response.t object containing the translation</li>
+</ul>
+</div>
+
+<pre><span id="VALlang_matcher"><span class="keyword">val</span> lang_matcher</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">lang_matcher lang</code> is a function that matches a string lang with a langauge that the translation API supports</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A string containing the encoding of the API language</li>
+</ul>
+</div>
+
+<pre><span id="VALtext_board"><span class="keyword">val</span> text_board</span> : <code class="type">string list list -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">text_board board</code> is a function that converts a game board to a string</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A string representation of the game board</li>
+</ul>
+</div>
+
+<pre><span id="VALother_player"><span class="keyword">val</span> other_player</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">other_player player</code> is a function that returns the other player</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The other player as a string ("x" or "o")</li>
+</ul>
+</div>
+
+<pre><span id="VALcheck_winner"><span class="keyword">val</span> check_winner</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">check_winner board_str player</code> is a function that checks if the given player has won the game</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A boolean indicating whether the player has won</li>
+</ul>
+</div>
+
+<pre><span id="VALempty_positions"><span class="keyword">val</span> empty_positions</span> : <code class="type">string list list -&gt; (int * int) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">empty_positions board</code> is a function that returns a list of empty positions on the game board</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A list of empty positions on the game board, each position represented as a pair of integers</li>
+</ul>
+</div>
+
+<pre><span id="VALis_valid_position"><span class="keyword">val</span> is_valid_position</span> : <code class="type">string list list -&gt; int * int -&gt; bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_valid_position board pos</code> is a function that checks if a given position is valid (empty) on the game board</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A boolean indicating whether the position is valid</li>
+</ul>
+</div>
+
+<pre><span id="VALstring_to_board"><span class="keyword">val</span> string_to_board</span> : <code class="type">string -&gt; string list list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_to_board board_str</code> is a function that converts a JSON string representation of a game board to a list of lists of strings</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The game board as a list of lists of strings</li>
+</ul>
+</div>
+
+<pre><span id="VALboard_to_string"><span class="keyword">val</span> board_to_string</span> : <code class="type">string list list -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">board_to_string board</code> is a function that converts a game board from a list of lists of strings to a JSON string</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The game board as a JSON string</li>
+</ul>
+</div>
+
+<pre><span id="VALminimax"><span class="keyword">val</span> minimax</span> : <code class="type">string -&gt; string -&gt; int * (int * int)</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">minimax board_str player</code> is a function that uses the minimax algorithm to determine the best move for the given player</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A pair consisting of the score of the best move and the best move itself as a pair of integers</li>
+</ul>
+</div>
+
+<pre><span id="VALai_move"><span class="keyword">val</span> ai_move</span> : <code class="type">string list list -&gt; string -&gt; int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">ai_move board player</code> is a function that determines the best move for the AI</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The best move for the AI as a pair of integers</li>
+</ul>
+</div>
+
+<pre><span id="VALmutable_game_board"><span class="keyword">val</span> mutable_game_board</span> : <code class="type">string list list Stdlib.ref</code></pre>
+<pre><span id="VALreference_board"><span class="keyword">val</span> reference_board</span> : <code class="type">unit -&gt; string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">reference_board ()</code> is a function that returns a reference game board as a string</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> A string representation of a reference game board</li>
+</ul>
+</div>
+
+<pre><span id="VALdigit_to_position"><span class="keyword">val</span> digit_to_position</span> : <code class="type">int -&gt; int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">digit_to_position digit</code> is a function that converts a digit (1-9) to a position on the game board</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> The position on the game board as a pair of integers</li>
+</ul>
+</div>
+</body></html>

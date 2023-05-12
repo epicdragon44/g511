@@ -1,3 +1,5 @@
+(** This is the interface for the Server library, which contains all server functionality. *)
+
 val conv_helper : float -> string -> string -> float
 (** [conv_helper amt from_unit to_unit] is a function that returns a float that is the converted (amt) from from_unit to to_unit
     @param amt is the amount to convert

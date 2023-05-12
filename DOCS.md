@@ -20,7 +20,7 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 
 ## Read the Docs
 
--   `make doc` will generate documentation for the bot and server. If you're on Mac, it will also open the docs in your browser. Otherwise, you can find the docs in `docs/index.html`.
+-   `make doc` will generate documentation for the bot and server. If you're on Mac, it will also automatically open the docs in your browser for you. Otherwise, you can manually find the docs in `docs/index.html`.
 
 ## Start the Project
 
