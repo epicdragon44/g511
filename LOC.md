@@ -6,7 +6,9 @@ We'll endeavor to explain decisions regarding how we counted lines of code in th
 
 ---
 
-Our `make loc` command counts all lines of code in `.ml` and `.mli` files, and those files only. Obviously, it excludes `_build` folders and the like.
+The `cloc` command that the Final Project assignment on Canvas recommends (`cloc --by-file --include-lang=OCaml .`) actually includes `_build` folders. We prefer not to use that metric.
+
+Thus, our `make loc` command counts all lines of code in `.ml` and `.mli` files, and those files only. Obviously, it excludes `_build` folders.
 
 ---
 
