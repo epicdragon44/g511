@@ -221,6 +221,82 @@ let json_parser_tests =
       assert_equal
         [ "The addition of 7 + 9 equals 16" ]
         (json_parser parsed_body) );
+    ( "parses a message with special characters" >:: fun _ ->
+      let parsed_body =
+        `Assoc
+          [
+            ( "choices",
+              `List
+                [
+                  `Assoc
+                    [
+                      ( "message",
+                        `Assoc
+                          [
+                            ( "content",
+                              `String
+                                "This message has !@#$%^&*()_+{}|:\"<>?/\\ \
+                                 characters." );
+                            ("role", `String "user");
+                          ] );
+                    ];
+                ] );
+          ]
+        |> Yojson.Basic.to_string
+      in
+      assert_equal
+        [ "This message has !@#$%^&*()_+{}|:\"<>?/\\ characters." ]
+        (json_parser parsed_body) );
+    ( "parses a message with newlines" >:: fun _ ->
+      let parsed_body =
+        `Assoc
+          [
+            ( "choices",
+              `List
+                [
+                  `Assoc
+                    [
+                      ( "message",
+                        `Assoc
+                          [
+                            ( "content",
+                              `String "This is a message\nwith multiple\nlines."
+                            );
+                            ("role", `String "user");
+                          ] );
+                    ];
+                ] );
+          ]
+        |> Yojson.Basic.to_string
+      in
+      assert_equal
+        [ "This is a message\nwith multiple\nlines." ]
+        (json_parser parsed_body) );
+    ( "parses a message with leading/trailing spaces" >:: fun _ ->
+      let parsed_body =
+        `Assoc
+          [
+            ( "choices",
+              `List
+                [
+                  `Assoc
+                    [
+                      ( "message",
+                        `Assoc
+                          [
+                            ( "content",
+                              `String "  This message has spaces around it.   "
+                            );
+                            ("role", `String "user");
+                          ] );
+                    ];
+                ] );
+          ]
+        |> Yojson.Basic.to_string
+      in
+      assert_equal
+        [ "This message has spaces around it." ]
+        (json_parser parsed_body) );
   ]
 
 let create_weather_url_test_helper api_key location expected _ =
