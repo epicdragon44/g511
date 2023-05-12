@@ -17,6 +17,14 @@ let tokenize str =
   in
   aux [] (String.split_on_char ' ' str)
 
+(** String parsing helper*)
+let rec get_element_at_index lst index =
+  match lst with
+  | [] -> raise (Invalid_argument "List is empty")
+  | x :: xs ->
+    if index = 0 then x
+    else get_element_at_index xs (index - 1)
+
 module MyBot = Mk (struct
   open Chat
 
@@ -64,6 +72,38 @@ module MyBot = Mk (struct
           let first = first_member input_arr |> int_of_string in
           let second = second_member input_arr |> int_of_string in
           rng_btwn first second 
+          |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+    
+    and convertunits input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          let input_arr = text |> String.split_on_char ' ' in
+          let amt = get_element_at_index input_arr 1 in
+          let from = get_element_at_index input_arr 2 in
+          let too = get_element_at_index input_arr 3 in
+          convert_units amt from too
+          |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+    
+    and convertcurr input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          let input_arr = text |> String.split_on_char ' ' in
+          let amt = get_element_at_index input_arr 1 in
+          let from = get_element_at_index input_arr 2 in
+          let too = get_element_at_index input_arr 3 in
+          convert_curr amt from too
+          |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+
+    and timenow input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          let input_arr = text |> String.split_on_char ' ' in
+          let area = get_element_at_index input_arr 1 in
+          let location = get_element_at_index input_arr 2 in
+          get_curr_time area location
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
 
@@ -125,7 +165,25 @@ module MyBot = Mk (struct
         description = "Ask the bot any question and it will try to answer it";
         enabled=true;
         run = general_chat;
-      }
+      };
+      {
+        name = "convert_units";
+        description = "Converts a given amount from one unit of measurement to another";
+        enabled = true;
+        run = convertunits;
+      };
+      {
+        name = "convert_currency";
+        description = "Converts a given amount from one unit of measurement to another";
+        enabled = true;
+        run = convertcurr;
+      };
+      {
+        name = "time_now";
+        description = "Returns the current time in a given timezone";
+        enabled = true;
+        run = timenow;
+      };
     ]
 end)
 
