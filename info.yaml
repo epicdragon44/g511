@@ -44,4 +44,3 @@ desc: >
     - A monorepo containing bot/ and server/ sub-repositories for division of responsibilities between user-facing and logic-handling code.
     - Integration with the Telegram SDK using Telegraml, and a full-featured HTTP server using Opium
     - Make scripts for initializing, installing, testing, running, killing, building, zipping, and even counting the lines of code in the project.
-    -

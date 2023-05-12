@@ -36,7 +36,7 @@ module MyBot = Mk (struct
   include Telegram.BotDefaults
 
   let token = get_env "BOT_TOKEN"
-  let command_postfix = Some "bocaml-beta-1"
+  let command_postfix = Some "bocaml"
 
   let commands =
     let open Telegram.Actions in
