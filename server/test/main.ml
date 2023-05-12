@@ -295,6 +295,55 @@ let translation_response_builder_tests =
           "Translation: Bonjour";
   ]
 
+let text_board_test_helper board expected _ =
+  let r = text_board board in
+  assert_equal expected r
+
+let other_player_test_helper player expected _ =
+  let r = other_player player in
+  assert_equal expected r
+
+let is_valid_position_test_helper board pos expected _ =
+  let r = is_valid_position board pos in
+  assert_equal expected r
+
+let digit_to_position_test_helper digit expected _ =
+  let r = digit_to_position digit in
+  assert_equal expected r
+
+let text_board_tests =
+  [
+    "text_board"
+    >:: text_board_test_helper
+          [ [ "_"; "_"; "_" ]; [ "_"; "_"; "_" ]; [ "_"; "_"; "_" ] ]
+          "| | | |\n| | | |\n| | | |\n";
+  ]
+
+let other_player_tests =
+  [
+    "other_player" >:: other_player_test_helper "x" "o";
+    "other_player" >:: other_player_test_helper "o" "x";
+  ]
+
+let is_valid_position_tests =
+  [
+    "is_valid_position"
+    >:: is_valid_position_test_helper
+          [ [ "x"; "_"; "_" ]; [ "_"; "o"; "_" ]; [ "_"; "_"; "x" ] ]
+          (0, 1) true;
+    "is_valid_position"
+    >:: is_valid_position_test_helper
+          [ [ "x"; "o"; "_" ]; [ "_"; "o"; "_" ]; [ "_"; "_"; "x" ] ]
+          (0, 1) false;
+  ]
+
+let digit_to_position_tests =
+  [
+    "digit_to_position" >:: digit_to_position_test_helper 1 (0, 0);
+    "digit_to_position" >:: digit_to_position_test_helper 5 (1, 1);
+    "digit_to_position" >:: digit_to_position_test_helper 9 (2, 2);
+  ]
+
 let suite =
   "test suite for all server functions"
   >::: List.flatten
@@ -314,6 +363,10 @@ let suite =
            translation_get_request_tests;
            extract_translation_from_body_tests;
            translation_response_builder_tests;
+           text_board_tests;
+           other_player_tests;
+           is_valid_position_tests;
+           digit_to_position_tests;
          ]
 
 let _ = run_test_tt_main suite

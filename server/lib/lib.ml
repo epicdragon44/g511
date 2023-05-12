@@ -428,3 +428,178 @@ let lang_matcher lang =
   | "Javanese" -> "jv"
   | "Japanese" -> "ja"
   | _ -> "unsupported"
+
+(** [text_board board] is a function that converts a game board to a string
+@param board The game board as a list of lists of strings
+@return A string representation of the game board
+@precond [board] must be a valid game board represented as a list of lists of strings
+@postcond The result is a string representation of the game board *)
+
+let text_board board =
+  let row_strings =
+    List.map
+      (fun row ->
+        "|"
+        ^ String.concat "|" (List.map (fun x -> if x = "_" then " " else x) row)
+        ^ "|\n")
+      board
+  in
+  String.concat "" row_strings
+
+open Yojson.Basic.Util
+
+(** [other_player player] is a function that returns the other player
+@param player The current player as a string ("x" or "o")
+@return The other player as a string ("x" or "o")
+@precond [player] must be either "x" or "o"
+@postcond The result is either "x" or "o", the other player *)
+
+let other_player player = if player = "x" then "o" else "x"
+
+(** [check_winner board_str player] is a function that checks if the given player has won the game
+@param board_str The game board as a JSON string
+@param player The player to check for win as a string ("x" or "o")
+@return A boolean indicating whether the player has won
+@precond [board_str] must be a valid JSON string representing a game board, [player] must be either "x" or "o"
+@postcond The result is a boolean value indicating whether the player has won *)
+
+let check_winner board_str player =
+  let board_json = Yojson.Basic.from_string board_str in
+  let board =
+    board_json |> member "board" |> to_list
+    |> List.map (fun row -> to_list row |> List.map to_string)
+  in
+  let check_row row = List.for_all (( = ) player) row in
+  let check_col col =
+    List.for_all (( = ) player) (List.map (fun row -> List.nth row col) board)
+  in
+  let check_diag1 () =
+    List.for_all2 (fun i row -> List.nth row i = player) [ 0; 1; 2 ] board
+  in
+  let check_diag2 () =
+    List.for_all2 (fun i row -> List.nth row (2 - i) = player) [ 0; 1; 2 ] board
+  in
+  List.exists check_row board
+  || List.exists (fun i -> check_col i) [ 0; 1; 2 ]
+  || check_diag1 () || check_diag2 ()
+
+(** [empty_positions board] is a function that returns a list of empty positions on the game board
+@param board The game board as a list of lists of strings
+@return A list of empty positions on the game board, each position represented as a pair of integers
+@precond [board] must be a valid game board represented as a list of lists of strings
+@postcond The result is a list of pairs of integers representing the empty positions on the game board *)
+
+let empty_positions board =
+  let positions = ref [] in
+  for i = 0 to 2 do
+    for j = 0 to 2 do
+      let cell = List.nth (List.nth board i) j in
+      if cell <> "x" && cell <> "o" then positions := (i, j) :: !positions
+    done
+  done;
+  !positions
+
+(** [is_valid_position board pos] is a function that checks if a given position is valid (empty) on the game board
+@param board The game board as a list of lists of strings
+@param pos The position to check as a pair of integers
+@return A boolean indicating whether the position is valid
+@precond [board] must be a valid game board represented as a list of lists of strings, [pos] must be a pair of integers
+@postcond The result is a boolean value indicating whether the position is valid *)
+
+let is_valid_position board pos =
+  let row = List.nth board (fst pos) in
+  let cell = List.nth row (snd pos) in
+  cell <> "x" && cell <> "o"
+
+(** [string_to_board board_str] is a function that converts a JSON string representation of a game board to a list of lists of strings
+@param board_str The game board as a JSON string
+@return The game board as a list of lists of strings
+@precond [board_str] must be a valid JSON string representing a game board
+@postcond The result is a game board represented as a list of lists of strings *)
+
+let string_to_board board_str =
+  let board_json = Yojson.Basic.from_string board_str in
+  board_json |> member "board" |> to_list
+  |> List.map (fun row -> to_list row |> List.map to_string)
+
+(** [board_to_string board] is a function that converts a game board from a list of lists of strings to a JSON string
+@param board The game board as a list of lists of strings
+@return The game board as a JSON string
+@precond [board] must be a valid game board represented as a list of lists of strings
+@postcond The result is a JSON string representing a game board *)
+
+let board_to_string board =
+  let board_json =
+    `Assoc
+      [
+        ( "board",
+          `List
+            (List.map
+               (fun row -> `List (List.map (fun cell -> `String cell) row))
+               board) );
+      ]
+  in
+  Yojson.Basic.to_string board_json
+
+(** [minimax board_str player] is a function that uses the minimax algorithm to determine the best move for the given player
+@param board_str The game board as a JSON string
+@param player The current player as a string ("x" or "o")
+@return A pair consisting of the score of the best move and the best move itself as a pair of integers
+@precond [board_str] must be a valid JSON string representing a game board, [player] must be either "x" or "o"
+@postcond The result is a pair consisting of the score of the best move and the best move itself as a pair of integers *)
+
+let rec minimax board_str player =
+  let board = string_to_board board_str in
+  if check_winner board_str (other_player player) then (-1, (0, 0))
+  else if empty_positions board = [] then (0, (0, 0))
+  else
+    let rec aux best_score best_move = function
+      | [] -> (best_score, best_move)
+      | (i, j) :: tail ->
+          let row = List.nth board i in
+          let updated_row =
+            List.mapi (fun k cell -> if k = j then player else cell) row
+          in
+          let updated_board =
+            List.mapi (fun k row -> if k = i then updated_row else row) board
+          in
+          let updated_board_str = board_to_string updated_board in
+          let score, _ = minimax updated_board_str (other_player player) in
+          let score = -score in
+          if score > best_score then aux score (i, j) tail
+          else aux best_score best_move tail
+    in
+    aux min_int (0, 0) (empty_positions board)
+
+(** [ai_move board player] is a function that determines the best move for the AI
+@param board The game board as a list of lists of strings
+@param player The AI player as a string ("x" or "o")
+@return The best move for the AI as a pair of integers
+@precond [board] must be a valid game board represented as a list of lists of strings, [player] must be either "x" or "o"
+@postcond The result is a pair of integers representing the best move for the AI *)
+
+let ai_move board player =
+  let _, best_move = minimax (board_to_string board) player in
+  best_move
+
+let mutable_game_board =
+  ref [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ]
+
+(** [reference_board ()] is a function that returns a reference game board as a string
+@return A string representation of a reference game board
+@postcond The result is a string representation of a reference game board *)
+
+let reference_board () =
+  let reference = [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ] in
+  "Reference board:\n" ^ text_board reference
+
+(** [digit_to_position digit] is a function that converts a digit (1-9) to a position on the game board
+@param digit The digit to convert as an integer
+@return The position on the game board as a pair of integers
+@precond [digit] must be an integer between 1 and 9 inclusive
+@postcond The result is a pair of integers representing a position on the game board *)
+
+let digit_to_position digit =
+  let row = (digit - 1) / 3 in
+  let col = (digit - 1) mod 3 in
+  (row, col)
