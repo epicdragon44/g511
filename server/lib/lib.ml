@@ -58,10 +58,12 @@ let rand_btwn (low : int) (high : int) : int = low + Random.int (high - low + 1)
 let coin_flip () : string = if Random.int 2 = 0 then "Heads" else "Tails"
 
 let header_creator (key : string) : Cohttp.Header.t =
-  if String.length key > 0 then
+  let key_trim = String.trim key in
+  if String.length key_trim > 0 then
     Cohttp.Header.of_list
       [
-        ("Content-Type", "application/json"); ("Authorization", "Bearer " ^ key);
+        ("Content-Type", "application/json");
+        ("Authorization", "Bearer " ^ key_trim);
       ]
   else failwith "Invalid api key"
 
