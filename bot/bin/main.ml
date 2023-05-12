@@ -21,9 +21,7 @@ let tokenize str =
 let rec get_element_at_index lst index =
   match lst with
   | [] -> raise (Invalid_argument "List is empty")
-  | x :: xs ->
-    if index = 0 then x
-    else get_element_at_index xs (index - 1)
+  | x :: xs -> if index = 0 then x else get_element_at_index xs (index - 1)
 
 module MyBot = Mk (struct
   open Chat
@@ -41,46 +39,35 @@ module MyBot = Mk (struct
   let command_postfix = Some "bocaml-beta-1"
 
   let commands =
-
     let open Telegram.Actions in
     let health_check { chat = { id; _ }; _ } =
       send_message ~chat_id:id "Hi there!"
-
     and echome input =
       match input with
       | { chat; text = Some text; _ } ->
           text |> remove_first_word_of |> echo
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage of /echo"
-
     and coinflipme input =
       match input with
       | { chat; text = Some text; _ } ->
           text |> remove_first_word_of |> flip_coin
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
     and rngme input =
-        let first_member (ls: string list) =
-            match ls with
-            | [] -> ""
-            | hd :: _ -> hd
-        in
-        let second_member (ls: string list) =
-            match ls with
-            | [] -> ""
-            | _ :: hd :: _ -> hd
-            | _ -> ""
-        in
+      let first_member (ls : string list) =
+        match ls with [] -> "" | hd :: _ -> hd
+      in
+      let second_member (ls : string list) =
+        match ls with [] -> "" | _ :: hd :: _ -> hd | _ -> ""
+      in
       match input with
       | { chat; text = Some text; _ } ->
           let input_arr = text |> remove_first_word_of |> tokenize in
           let first = first_member input_arr |> int_of_string in
           let second = second_member input_arr |> int_of_string in
-          rng_btwn first second 
-          |> send_message ~chat_id:chat.id "%s"
+          rng_btwn first second |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-    
     and convertunits input =
       match input with
       | { chat; text = Some text; _ } ->
@@ -88,10 +75,8 @@ module MyBot = Mk (struct
           let amt = get_element_at_index input_arr 1 in
           let from = get_element_at_index input_arr 2 in
           let too = get_element_at_index input_arr 3 in
-          convert_units amt from too
-          |> send_message ~chat_id:chat.id "%s"
+          convert_units amt from too |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-    
     and convertcurr input =
       match input with
       | { chat; text = Some text; _ } ->
@@ -99,87 +84,57 @@ module MyBot = Mk (struct
           let amt = get_element_at_index input_arr 1 in
           let from = get_element_at_index input_arr 2 in
           let too = get_element_at_index input_arr 3 in
-          convert_curr amt from too
-          |> send_message ~chat_id:chat.id "%s"
+          convert_curr amt from too |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
     and timenow input =
       match input with
       | { chat; text = Some text; _ } ->
           let input_arr = text |> String.split_on_char ' ' in
           let area = get_element_at_index input_arr 1 in
           let location = get_element_at_index input_arr 2 in
-          get_curr_time area location
+          get_curr_time area location |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
+    and general_chat input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          text |> remove_first_word_of |> general_chat_handler_call
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
-    and general_chat input =
-          match input with
-          | { chat; text = Some text; _ } ->
-              text |> remove_first_word_of |> general_chat_handler_call
-              |> send_message ~chat_id:chat.id "%s"
-          | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
-
     and weatherme input =
       match input with
       | { chat; text = Some text; _ } ->
           text |> remove_first_word_of |> get_weather
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
     and translateme input =
-    let parse_translation_text text =  
-      match String.split_on_char ' ' text with
-      | _command :: lang_from :: lang_to :: text_to_translate_parts ->
-          let text_to_translate = String.concat " " text_to_translate_parts in
-          (lang_from, lang_to, text_to_translate)
-      | _ -> failwith "Invalid usage: /translate <from_lang> <to_lang> <text>"
+      let parse_translation_text text =
+        match String.split_on_char ' ' text with
+        | _command :: lang_from :: lang_to :: text_to_translate_parts ->
+            let text_to_translate = String.concat " " text_to_translate_parts in
+            (lang_from, lang_to, text_to_translate)
+        | _ -> failwith "Invalid usage: /translate <from_lang> <to_lang> <text>"
       in
       match input with
       | { chat; text = Some text; _ } ->
-          let lang_from, lang_to, text_to_translate = parse_translation_text text in
-          text_to_translate |> get_translate lang_from lang_to
+          let lang_from, lang_to, text_to_translate =
+            parse_translation_text text
+          in
+          text_to_translate
+          |> get_translate lang_from lang_to
           |> send_message ~chat_id:chat.id "%s"
       | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-      
-      and ai_handler_me input =
-        match input with
-        | { chat; text = Some text; _ } ->
-            let params = String.split_on_char ' ' text in
-            let _ = List.hd params in 
-            let action, player, pos =
-              match List.tl params with
-              | action :: player :: pos :: [] -> action, player, int_of_string pos
-              | _ -> failwith "Invalid parameters"
-            in
-            get_ai_text action player pos
-            |> send_message ~chat_id:chat.id "%s"
-        | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
-    (** Secondary TODO: For each and every server function you wrote:
-    
-      - Copy paste the following bit of code, fill in the <template bits>, and then paste it immediately above.
-
-          and <YOUR_FUNCTION_NAME> input =
-            match input with
-            | { chat; text = Some text; _ } ->
-                text |> remove_first_word_of |> <YOUR_FUNCTION_IN_LIB/YOURNAME.ml> <-- do something with the text you're being passed here.
-                |> send_message ~chat_id:chat.id "%s"
-            | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
-
-          Check that you don't introduce naming conflicts! Might sound dumb, but fair warning lmao.
-
-      - Copy and paste the following bit of code, fill in the <template bits>, and then paste it in the array below.
-
-          {
-            name = "<HUMAN_TYPE-ABLE_FUNCTION>"; <-- eg. if your function is called `play`, the user will send `/play` to the bot to trigger this function.
-            description = "<HUMAN_READABLE_DESCRIPTION>";
-            enabled=true;
-            run = <YOUR_FUNCTION_NAME>;
-          }
-    *)
-
+    and ai_handler_me input =
+      match input with
+      | { chat; text = Some text; _ } ->
+          let params = String.split_on_char ' ' text in
+          let _ = List.hd params in
+          let action, player, pos =
+            match List.tl params with
+            | [ action; player; pos ] -> (action, player, int_of_string pos)
+            | _ -> failwith "Invalid parameters"
+          in
+          get_ai_text action player pos |> send_message ~chat_id:chat.id "%s"
+      | { chat; _ } -> send_message ~chat_id:chat.id "Invalid usage"
     in
 
     [
@@ -205,18 +160,20 @@ module MyBot = Mk (struct
       {
         name = "general_chat";
         description = "Ask the bot any question and it will try to answer it";
-        enabled=true;
+        enabled = true;
         run = general_chat;
       };
       {
         name = "convert_units";
-        description = "Converts a given amount from one unit of measurement to another";
+        description =
+          "Converts a given amount from one unit of measurement to another";
         enabled = true;
         run = convertunits;
       };
       {
         name = "convert_currency";
-        description = "Converts a given amount from one unit of measurement to another";
+        description =
+          "Converts a given amount from one unit of measurement to another";
         enabled = true;
         run = convertcurr;
       };
@@ -234,14 +191,18 @@ module MyBot = Mk (struct
       };
       {
         name = "translate";
-        description = "Get the translation of a body of text from one language to another";
+        description =
+          "Get the translation of a body of text from one language to another";
         enabled = true;
         run = translateme;
       };
       {
         name = "play";
-        description = "Play a game of Tic Tac Toe against an AI. Use '/play_tic_tac_toe start x' to start a new game as X, or '/play_tic_tac_toe move x 5' to place your X at position 5.";
-        enabled=true;
+        description =
+          "Play a game of Tic Tac Toe against an AI. Use '/play_tic_tac_toe \
+           start x' to start a new game as X, or '/play_tic_tac_toe move x 5' \
+           to place your X at position 5.";
+        enabled = true;
         run = ai_handler_me;
       };
     ]
