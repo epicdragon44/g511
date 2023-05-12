@@ -34,6 +34,8 @@ Each subproject is comprised of 3 parts:
 -   A testing file in `test/main.ml`
 -   **ALL** the project logic and functionality in `lib/`, which is imported by `bin/main.ml` to be used during executiong, and `test/main.ml` for testing.
 
+The purpose of `server` is to do all the computational heavy-lifting. `bot` exists merely as a medium between the Telegram API and our own server API.
+
 ## Start the Project
 
 -   `make build` will build the bot and server, as well as format the code. This might help with red squiggly lines everywhere. Run this before you start working!
