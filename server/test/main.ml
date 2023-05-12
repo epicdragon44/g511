@@ -250,9 +250,53 @@ let get_response_body_tests =
 
 let extract_weather_description_tests =
   [
-    "extract_weather_description"
+    "extract_weather_description_1"
     >:: extract_weather_description_test_helper
           {|{"current":{"weather_descriptions":["Sunny"]}}|} "Sunny";
+    "extract_weather_description_2"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Clear"]}}|} "Clear";
+    "extract_weather_description_3"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Partly Cloudy"]}}|}
+          "Partly Cloudy";
+    "extract_weather_description_4"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Overcast"]}}|} "Overcast";
+    "extract_weather_description_5"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Cloudy"]}}|} "Cloudy";
+    "extract_weather_description_6"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Fog"]}}|} "Fog";
+    "extract_weather_description_7"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Mist"]}}|} "Mist";
+    "extract_weather_description_8"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Rain"]}}|} "Rain";
+    "extract_weather_description_9"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Drizzle"]}}|} "Drizzle";
+    "extract_weather_description_10"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Snow"]}}|} "Snow";
+    "extract_weather_description_11"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Sleet"]}}|} "Sleet";
+    "extract_weather_description_12"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Hail"]}}|} "Hail";
+    "extract_weather_description_13"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Thunderstorm"]}}|}
+          "Thunderstorm";
+    "extract_weather_description_14"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Tornado"]}}|} "Tornado";
+    "extract_weather_description_15"
+    >:: extract_weather_description_test_helper
+          {|{"current":{"weather_descriptions":["Blizzard"]}}|} "Blizzard";
   ]
 
 let translation_url_creator_tests =
