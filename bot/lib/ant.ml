@@ -97,4 +97,4 @@ let convert_curr (amt : string) (from : string) (too : string) : string =
     string will be "The current time in America/New_York is 18:00:00"
 *)
 let get_curr_time (area : string) (location : string) =
-  call ("http://localhost:9000/convert/" ^ area ^ "/" ^ location)
+  call ("http://localhost:9000/time/" ^ area ^ "/" ^ location)
