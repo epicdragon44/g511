@@ -34,6 +34,95 @@ let header_creator_tests =
     header_creator_test_helper "inputting a key of size 1" "1"
       (Cohttp.Header.of_list
          [ ("Content-Type", "application/json"); ("Authorization", "Bearer 1") ]);
+    ( "testing with empty key" >:: fun _ ->
+      assert_raises (Failure "Invalid api key") (fun _ -> header_creator "") );
+    header_creator_test_helper "inputting some key with special characters"
+      "g43308?!@#dwiodjaiojFWDW3122"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "g43308?!@#dwiodjaiojFWDW3122");
+         ]);
+    header_creator_test_helper "inputting a key with only uppercase letters"
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+         ]);
+    header_creator_test_helper "inputting a key with only lowercase letters"
+      "abcdefghijklmnopqrstuvwxyz"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "abcdefghijklmnopqrstuvwxyz");
+         ]);
+    header_creator_test_helper "inputting a key with whitespace"
+      "g433081FWDW 3122"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "g433081FWDW 3122");
+         ]);
+    header_creator_test_helper
+      "inputting a key with leading/trailing whitespace" "  g433081FWDW3122  "
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "g433081FWDW3122");
+         ]);
+    header_creator_test_helper "inputting a key with leading whitespace"
+      "   g83u219hduhw8921"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "g83u219hduhw8921");
+         ]);
+    header_creator_test_helper "inputting a key with trailing whitespace"
+      "jiiuu2hue2189e189  "
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "jiiuu2hue2189e189");
+         ]);
+    ( "testing with only whitespaces" >:: fun _ ->
+      assert_raises (Failure "Invalid api key") (fun _ ->
+          header_creator "      ") );
+    ( "testing with only tabs" >:: fun _ ->
+      assert_raises (Failure "Invalid api key") (fun _ ->
+          header_creator "\t\t\t\t\t\t\t") );
+    ( "testing with only newlines" >:: fun _ ->
+      assert_raises (Failure "Invalid api key") (fun _ ->
+          header_creator "\n\n\n\n\n\n\n\n") );
+    header_creator_test_helper
+      "inputting a key with mixed whitespace characters"
+      "  \t\n\r gijh392yr89e2hr98\t \n\r "
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "gijh392yr89e2hr98");
+         ]);
+    header_creator_test_helper "inputting a key with multiple tabs"
+      "g433081FWDW\t3122"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "g433081FWDW\t3122");
+         ]);
+    header_creator_test_helper "inputting a key with trailing tabs"
+      "weeu2198ue281ue1\t\t"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "weeu2198ue281ue1\t\t");
+         ]);
+    header_creator_test_helper "inputting a key that has random input"
+      "dnwjqdnoiu1jhd9h280919wdWQCASFWQ"
+      (Cohttp.Header.of_list
+         [
+           ("Content-Type", "application/json");
+           ("Authorization", "Bearer " ^ "dnwjqdnoiu1jhd9h280919wdWQCASFWQ");
+         ]);
   ]
 
 let param_creator_tests =
