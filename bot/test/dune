@@ -1,3 +1,8 @@
 (test
  (name main)
  (libraries bot ounit2))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))

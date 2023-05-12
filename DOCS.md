@@ -33,6 +33,8 @@ First, [start the project](#start-the-project).
 
 Then, run `make test`. This will run all the tests in server and bot (using OUnit). Expect to see two OKs -- one for the bot and one for the server!
 
+When you're done, don't forget to [stop the project](#stop-the-project).
+
 ## Contribute Code
 
 Edit these two files to get started!
