@@ -9,6 +9,8 @@ opam install -y utop odoc ounit2 qcheck bisect_ppx menhir ocaml-lsp-server ocaml
 opam install -y user-setup
 opam user-setup install
 
+opam install ocamlfind
+
 # Run install and build scripts for each project
 
 cd server

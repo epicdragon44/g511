@@ -28,7 +28,7 @@ Make sure you are in the root directory of the repository, then run `make initia
 
 ## 3. Next Steps
 
-Having done all this, proceed to the [docs](DOCS.md) and keep reading for instructions on building, testing, and running. This is required, including for you CS3110 graders!
+Having done all this, proceed to the [docs](DOCS.md) and keep reading for instructions on building, testing, and running. This is **required**, including for CS3110 graders!
 
 ---
 
