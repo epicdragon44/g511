@@ -37,6 +37,13 @@ test:
 
 # Commands to help with submission.
 
+doc:
+	@echo "Generating documentation..."
+	cd bot && ocamldoc -html -d ../docs/bot
+	cd server && ocamldoc -html -d ../docs/server
+	sleep 3
+	open docs/index.html
+
 loc:
 	./loc.sh
 

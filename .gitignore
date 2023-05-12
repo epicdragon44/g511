@@ -8,6 +8,7 @@
 *.cmxs
 *.cmxa
 *.env
+**/.DS_Store
 
 # ocamlbuild working directory
 _build/
