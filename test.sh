@@ -1,12 +1,17 @@
 # Build and run server and bot
 
-make kill > /dev/null 2>&1
-make build > /dev/null 2>&1
-make run > /dev/null 2>&1
-
 echo "Preparing to run tests..."
+
+make kill > /dev/null 2>&1
+sleep 0.5
+make build > /dev/null 2>&1
+sleep 0.5
+make run > /dev/null 2>&1
+sleep 0.5
+
 echo ""
-sleep 3
+
+sleep 3.5
 
 # Run tests
 
@@ -29,6 +34,8 @@ do
     cd $dir
     output=$(dune exec test/main.exe)
     cd ..
+
+    sleep 1
 
     # Check if the output contains "OK"
     if echo "$output" | grep -q "OK"; then
@@ -64,8 +71,6 @@ else
 fi
 
 # Kill server and bot
-
-sleep 1
 
 make kill > /dev/null 2>&1
 

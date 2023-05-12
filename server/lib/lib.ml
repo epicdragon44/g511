@@ -5,7 +5,7 @@ open Yojson.Safe.Util
 open Lwt.Syntax
 open Cohttp
 
-let conv_helper (amt: float) (from_unit: string) (to_unit: string) : float =
+let conv_helper (amt : float) (from_unit : string) (to_unit : string) : float =
   (* enforce preconds *)
   if not (Float.is_finite amt) then
     failwith "amt and converted_amt should be finite floats";
@@ -45,7 +45,8 @@ let conv_helper (amt: float) (from_unit: string) (to_unit: string) : float =
   in
   amt *. conversion_factor
 
-let pp_unit_conv (amt: float) (from_unit: string) (to_unit: string) (converted_amt: float) : string =
+let pp_unit_conv (amt : float) (from_unit : string) (to_unit : string)
+    (converted_amt : float) : string =
   (* enforce preconds *)
   if not (Float.is_finite amt && Float.is_finite converted_amt) then
     failwith "amt and converted_amt should be finite floats";
@@ -54,10 +55,9 @@ let pp_unit_conv (amt: float) (from_unit: string) (to_unit: string) (converted_a
   Printf.sprintf "%g %s = %g %s" amt from_unit converted_amt to_unit
 
 let rand_btwn (low : int) (high : int) : int = low + Random.int (high - low + 1)
-
 let coin_flip () : string = if Random.int 2 = 0 then "Heads" else "Tails"
 
-let header_creator (key: string) : Cohttp.Header.t =
+let header_creator (key : string) : Cohttp.Header.t =
   if String.length key > 0 then
     Cohttp.Header.of_list
       [
@@ -65,7 +65,7 @@ let header_creator (key: string) : Cohttp.Header.t =
       ]
   else failwith "Invalid api key"
 
-let param_creator (msg: string) =
+let param_creator (msg : string) =
   if String.length msg > 0 then
     `Assoc
       [
@@ -76,12 +76,13 @@ let param_creator (msg: string) =
       ]
   else failwith "Error: Empty Message"
 
-let chatbot_postrequest (header: Header.t) (param: Yojson.Safe.t) (endpoint: Uri.t) : (Cohttp.Response.t * Cohttp_lwt.Body.t) t =
+let chatbot_postrequest (header : Header.t) (param : Yojson.Safe.t)
+    (endpoint : Uri.t) : (Cohttp.Response.t * Cohttp_lwt.Body.t) t =
   Cohttp_lwt_unix.Client.post ~headers:header
     ~body:(`String (Yojson.Safe.to_string param))
     endpoint
 
-let json_parser (parsed_body: string) : string list =
+let json_parser (parsed_body : string) : string list =
   if String.length parsed_body > 0 then
     parsed_body |> Yojson.Basic.from_string
     |> Yojson.Basic.Util.member "choices"
@@ -93,13 +94,13 @@ let json_parser (parsed_body: string) : string list =
            |> Yojson.Basic.Util.to_string)
   else failwith "Invalid Input: Empty body"
 
-let chatbot_body_handler (parsed_body: string) : Rock.Response.t =
+let chatbot_body_handler (parsed_body : string) : Rock.Response.t =
   let json = json_parser parsed_body in
   match json with
   | [] -> Printf.sprintf "Empty" |> Opium.Response.of_plain_text
   | h :: _ -> Printf.sprintf "%s\n" h |> Opium.Response.of_plain_text
 
-let chatbot_error_handler (resp: Cohttp.Response.t) : Rock.Response.t t =
+let chatbot_error_handler (resp : Cohttp.Response.t) : Rock.Response.t t =
   Printf.sprintf "Error: %s\n"
     (Cohttp_lwt.Response.status resp |> Cohttp.Code.string_of_status)
   |> Opium.Response.of_plain_text |> Lwt.return
@@ -116,7 +117,7 @@ let chatbot_error_handler (resp: Cohttp.Response.t) : Rock.Response.t t =
    | `OK -> body |> Cohttp_lwt.Body.to_string >|= chatbot_body_handler
    | _ -> chatbot_error_handler resp *)
 
-let create_weather_url (api_key: string) (location: string) : Uri.t =
+let create_weather_url (api_key : string) (location : string) : Uri.t =
   if String.length api_key > 0 && String.length location > 0 then
     Uri.of_string
       (Printf.sprintf
@@ -124,12 +125,12 @@ let create_weather_url (api_key: string) (location: string) : Uri.t =
          location)
   else failwith "Invalid Input: Empty api_key or location"
 
-let get_response_body (location: string) (weather: string) : string =
+let get_response_body (location : string) (weather : string) : string =
   if String.length location > 0 && String.length weather > 0 then
     Printf.sprintf "The weather in %s is %s." location weather
   else failwith "Invalid Input: Empty location or weather"
 
-let extract_weather_description (json: Yojson.Safe.t) : string =
+let extract_weather_description (json : Yojson.Safe.t) : string =
   Yojson.Safe.Util.(
     json |> member "current"
     |> member "weather_descriptions"
@@ -138,24 +139,27 @@ let extract_weather_description (json: Yojson.Safe.t) : string =
 let api_key_provider () : string =
   "trnsl.1.1.20230317T192942Z.38aa007e66112d27.70023d1d131998c0c80fd04ef3c38c5024a7068c"
 
-let translation_url_creator (api_key: string) (input: string) (lang_from_match: string) (lang_to_match: string) : Uri.t =
+let translation_url_creator (api_key : string) (input : string)
+    (lang_from_match : string) (lang_to_match : string) : Uri.t =
   Uri.of_string
     (Printf.sprintf
        "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&text=%s&lang=%s-%s"
        api_key input lang_from_match lang_to_match)
 
-let translation_get_request (url: Uri.t) : (Cohttp.Response.t * Cohttp_lwt.Body.t) t = Cohttp_lwt_unix.Client.get url
+let translation_get_request (url : Uri.t) :
+    (Cohttp.Response.t * Cohttp_lwt.Body.t) t =
+  Cohttp_lwt_unix.Client.get url
 
-let extract_translation_from_body (body: Cohttp_lwt.Body.t) : string t =
+let extract_translation_from_body (body : Cohttp_lwt.Body.t) : string t =
   body |> Cohttp_lwt.Body.to_string >|= fun body_str ->
   let json = Yojson.Safe.from_string body_str in
   Yojson.Safe.Util.(json |> member "text" |> to_list |> List.hd |> to_string)
 
-let translation_response_builder (translation: string) : Rock.Response.t =
+let translation_response_builder (translation : string) : Rock.Response.t =
   let response_body = Printf.sprintf "Translation: %s" translation in
   Opium.Response.of_plain_text response_body
 
-let lang_matcher (lang: string) : string =
+let lang_matcher (lang : string) : string =
   match lang with
   | "Azerbaijani" -> "az"
   | "Albanian" -> "sq"
@@ -252,7 +256,7 @@ let lang_matcher (lang: string) : string =
   | "Japanese" -> "ja"
   | _ -> "unsupported"
 
-let text_board (board: string list list) : string =
+let text_board (board : string list list) : string =
   let row_strings =
     List.map
       (fun row ->
@@ -265,9 +269,9 @@ let text_board (board: string list list) : string =
 
 open Yojson.Basic.Util
 
-let other_player (player: string) : string = if player = "x" then "o" else "x"
+let other_player (player : string) : string = if player = "x" then "o" else "x"
 
-let check_winner (board_str: string) (player: string) : bool =
+let check_winner (board_str : string) (player : string) : bool =
   let board_json = Yojson.Basic.from_string board_str in
   let board =
     board_json |> member "board" |> to_list
@@ -287,7 +291,7 @@ let check_winner (board_str: string) (player: string) : bool =
   || List.exists (fun i -> check_col i) [ 0; 1; 2 ]
   || check_diag1 () || check_diag2 ()
 
-let empty_positions (board: string list list) : (int * int) list =
+let empty_positions (board : string list list) : (int * int) list =
   let positions = ref [] in
   for i = 0 to 2 do
     for j = 0 to 2 do
@@ -297,17 +301,17 @@ let empty_positions (board: string list list) : (int * int) list =
   done;
   !positions
 
-let is_valid_position (board: string list list) (pos: int * int) : bool =
+let is_valid_position (board : string list list) (pos : int * int) : bool =
   let row = List.nth board (fst pos) in
   let cell = List.nth row (snd pos) in
   cell <> "x" && cell <> "o"
 
-let string_to_board (board_str: string) : string list list =
+let string_to_board (board_str : string) : string list list =
   let board_json = Yojson.Basic.from_string board_str in
   board_json |> member "board" |> to_list
   |> List.map (fun row -> to_list row |> List.map to_string)
 
-let board_to_string (board: string list list) : string =
+let board_to_string (board : string list list) : string =
   let board_json =
     `Assoc
       [
@@ -320,7 +324,7 @@ let board_to_string (board: string list list) : string =
   in
   Yojson.Basic.to_string board_json
 
-let rec minimax (board_str: string) (player: string) : int * (int * int) =
+let rec minimax (board_str : string) (player : string) : int * (int * int) =
   let board = string_to_board board_str in
   if check_winner board_str (other_player player) then (-1, (0, 0))
   else if empty_positions board = [] then (0, (0, 0))
@@ -343,18 +347,18 @@ let rec minimax (board_str: string) (player: string) : int * (int * int) =
     in
     aux min_int (0, 0) (empty_positions board)
 
-let ai_move (board: string list list) (player: string) : int * int =
+let ai_move (board : string list list) (player : string) : int * int =
   let _, best_move = minimax (board_to_string board) player in
   best_move
 
 let mutable_game_board =
   ref [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ]
-  
+
 let reference_board () : string =
   let reference = [ [ "1"; "2"; "3" ]; [ "4"; "5"; "6" ]; [ "7"; "8"; "9" ] ] in
   "Reference board:\n" ^ text_board reference
 
-let digit_to_position (digit: int) : int * int =
+let digit_to_position (digit : int) : int * int =
   let row = (digit - 1) / 3 in
   let col = (digit - 1) mod 3 in
   (row, col)

@@ -18,7 +18,7 @@ val pp_unit_conv : float -> string -> string -> float -> string
     @return a string formatted as follows: "[amt] [from_unit] = [converted_amt] [to_unit]"
     @precond [amt] and [converted_amt] are floats; [from_unit] and [to_unit] are strings
     @postcond return type is a string *)
-    
+
 val rand_btwn : int -> int -> int
 (**
   * [rand_btwn low high] is a random integer between [low] and [high], inclusive.
@@ -42,11 +42,10 @@ val header_creator : string -> Cohttp.Header.t
 val param_creator :
   string ->
   [> `Assoc of
-       (string *
-        [> `List of
-             [> `Assoc of (string * [> `String of string ]) list ] list
-         | `String of string ])
-       list ]
+     (string
+     * [> `List of [> `Assoc of (string * [> `String of string ]) list ] list
+       | `String of string ])
+     list ]
 (** [param_creator msg] is a function that returns a Assoc object, which is the parameters for the API request
     @param [msg] The message that the user wants to send to the chatbot
     @return The Assoc type that will be sent as a parameter in the POST request
@@ -56,7 +55,9 @@ val param_creator :
 
 val chatbot_postrequest :
   Cohttp.Header.t ->
-  Yojson.Safe.t -> Uri.t -> (Cohttp.Response.t * Cohttp_lwt.Body.t) Lwt.t
+  Yojson.Safe.t ->
+  Uri.t ->
+  (Cohttp.Response.t * Cohttp_lwt.Body.t) Lwt.t
 (** [chatbot_postrequest header param endpoint] is a function that makes a POST request
     @param [header] [param] [endpoint] The message that the user wants to send to the chatbot
     @return Returns a pair with the Response and Body of the request
@@ -71,7 +72,7 @@ val json_parser : string -> string list
     @precond [parsed_body] is a non-empty string
     @postcond Creates a string list version of the string body
      *)
-    
+
 val chatbot_body_handler : string -> Rock.Response.t
 (** [chatbot_body_handler parsed_body] is a function that parses the body and returns it in a readable format
     @param [parsed_body] Is the string version of the body
@@ -103,7 +104,7 @@ val get_response_body : string -> string -> string
     @return A response body string
     @precond [location] and [weather] must be non-empty strings
     @postcond The result is of type string *)
-    
+
 val extract_weather_description : Yojson.Safe.t -> string
 (** [extract_weather_description json] is a function that extracts the weather description from the given JSON
     @param json A JSON object containing the weather data
@@ -128,7 +129,7 @@ val translation_url_creator : string -> string -> string -> string -> Uri.t
 
 val translation_get_request :
   Uri.t -> (Cohttp.Response.t * Cohttp_lwt.Body.t) Lwt.t
- (** [translation_get_request url] is a function that makes a GET request to the given URL
+(** [translation_get_request url] is a function that makes a GET request to the given URL
     @param url The Uri.t type URL for the translation request
     @return A pair containing the response and body of the GET request
     @precond [url] must be a valid Uri.t type URL
@@ -224,14 +225,14 @@ val ai_move : string list list -> string -> int * int
 
 val mutable_game_board : string list list ref
 
+val reference_board : unit -> string
 (** [reference_board ()] is a function that returns a reference game board as a string
     @return A string representation of a reference game board
     @postcond The result is a string representation of a reference game board *)
-val reference_board : unit -> string
 
+val digit_to_position : int -> int * int
 (** [digit_to_position digit] is a function that converts a digit (1-9) to a position on the game board
     @param digit The digit to convert as an integer
     @return The position on the game board as a pair of integers
     @precond [digit] must be an integer between 1 and 9 inclusive
     @postcond The result is a pair of integers representing a position on the game board *)
-val digit_to_position : int -> int * int

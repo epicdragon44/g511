@@ -3,7 +3,7 @@
 echo "Generating documentation for bot ..."
 
 cd bot
-ocamldoc -html -d ../docs/bot lib/*.mli
+ocamldoc -html -d ../docs/bot lib/*.mli > /dev/null 2>&1
 cd ..
 
 sleep 2
@@ -13,7 +13,7 @@ sleep 2
 echo "Generating documentation for server ..."
 
 cd server
-ocamlfind ocamldoc -package cohttp,cohttp-lwt,lwt,rock,stdlib,uri,yojson -I _build -html -d ../docs/server lib/*.mli
+ocamlfind ocamldoc -package cohttp,cohttp-lwt,lwt,rock,stdlib,uri,yojson -I _build -html -d ../docs/server lib/*.mli > /dev/null 2>&1
 cd ..
 
 sleep 2

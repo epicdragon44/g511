@@ -6,6 +6,8 @@ Return to [README.md](README.md)
 
 See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following assumes you've already done so.
 
+Please, _please_ read this file carefully and in its entirety.
+
 ## Table of Contents
 
 0. [Read the Docs](#read-the-docs)
@@ -14,13 +16,23 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 3. [Test the Project](#test-the-project)
 4. [Contribute Code](#contribute-code)
 5. [Interact with the Bot](#interact-with-the-bot)
-6. [Helping with Submissions](#helping-with-submissions)
+6. [For Project Graders](#for-project-graders)
 
 ---
 
 ## Read the Docs
 
 -   `make doc` will generate documentation for the bot and server. If you're on Mac, it will also automatically open the docs in your browser for you. Otherwise, you can manually find the docs in `docs/index.html`.
+
+### Project Structure
+
+This is important! The project is structured as a monorepo, with two subprojects: `bot/` and `server/`. Each subproject is a _self-contained OCaml project._
+
+Each subproject is comprised of 3 parts:
+
+-   An executable `bin/main.ml`, which contains extensive boilerplate code (eg. to setup a Telegram server, or an HTTP server)
+-   A testing file in `test/main.ml`
+-   **ALL** the project logic and functionality in `lib/`, which is imported by `bin/main.ml` to be used during executiong, and `test/main.ml` for testing.
 
 ## Start the Project
 
@@ -33,7 +45,6 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 -   `make clean` will remove all build artifacts.
 
 You can interact with the bot while the code is running on Telegram `@bocaml-beta-1`.
-You can test the server via Postman. Checkout **Server API** below.
 
 ## Test the Project
 
@@ -54,26 +65,36 @@ This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
 
+(If, after installing a dependency, documentation no longer works, you may also have to manually add your server dependency to `doc.sh`. You should probably reach out to Daniel if that's the case.)
+
 ---
 
 ## Interact with the Bot
 
 Assuming you've [started the project](#start-the-project), you can interact with the bot on Telegram `@bocaml-beta-1`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
 
-If you want to more directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line. Check out **Server API** above for the endpoints.
+If you want to more directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line.
 
 ---
 
-## Helping with Submissions
+## For Project Graders
 
-If you're a grader, you might be interested in this!
+For CS 3110 Project Graders, there's some extra docs for you to read in addition to everything above.
+
+#### Important Files
+
+1. Instead of a singular `test.ml` file, we have multiple. This is a consequence of our project structure. In order to grade our "test file", please direct your attention to [TEST.md](TEST.md) instead, where we have documented our testing choices ad nauseam.
+
+2. Instead of a `LOC.txt` file, we have a [LOC.md](LOC.md) file. Therein, we have explained our lines-of-code counting methodology. We hope you'll excuse the trivial differences in formatting.
 
 #### Zipping
 
 `make zip` will clean build artifacts, and then zip the files into a shareable archive.
 
-Note that the generated ZIP archive will include `.env` files. This makes it ideal for internal transfers, submissions to CMSX, etc. It is NOT to be made public. The generated zip archive will NOT be committed to git.
+Note that the generated ZIP archive will include `.env` files. This makes it ideal for internal transfers, submissions to CMSX, etc. It is NOT to be made public. The generated zip archive will NOT be committed to git. This is probably how you, the Project Grader, will be receiving our code.
 
 #### Counting Lines of Code
 
-`make loc` will return you a count of the total number of lines of code spread across all `.ml` files in the monorepo.
+`make loc` will return you our total lines of code.
+
+If you're curious about the methodology, direct your attention to [LOC.md](LOC.md), as mentioned above.
