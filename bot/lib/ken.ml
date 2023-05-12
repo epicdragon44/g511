@@ -19,3 +19,18 @@ open Helper
     - Then I wrote some unit tests for it in [bot/test/main.ml].
     - Then I followed the instructions in [bot/bin/main.ml] to connect it to the Telegram bot.
 *)
+
+(** [general_chat_handler_call msg] returns a string that is the response from the
+    server when the user sends a message in the general chat handler.
+
+    Precondition: [msg] is a string.
+    Postcondition: Returns a string that is the response from the server.
+
+    @param (msg : string) is the message sent by the user
+
+    @return a string that is the response from the server
+
+    @example general_chat_handler "Tell me the news" 1 returns "Here's the news: ..."
+*)
+let general_chat_handler_call (msg : string) : string =
+  call ("http://localhost:9000/chat/general/" ^ msg ^ "/0")
