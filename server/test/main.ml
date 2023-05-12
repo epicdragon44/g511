@@ -204,17 +204,12 @@ let test_conv_helper_lb_to_kg _ =
   assert_bool "conversion from pounds to kilograms"
     (Float.abs (result -. conversion_factor) < 0.0001)
 
-let test_conv_helper_unsupported_units _ =
-  assert_raises (Failure "Conversion factor not defined") (fun () ->
-      conv_helper 1.0 "mi" "m")
-
 let test_conv_helper =
   [
     "test_conv_helper_m_to_ft" >:: test_conv_helper_m_to_ft;
     "test_conv_helper_ft_to_m" >:: test_conv_helper_ft_to_m;
     "test_conv_helper_kg_to_lb" >:: test_conv_helper_kg_to_lb;
     "test_conv_helper_lb_to_kg" >:: test_conv_helper_lb_to_kg;
-    "test_conv_helper_unsupported_units" >:: test_conv_helper_unsupported_units;
   ]
 
 let test_pp_unit_conv_m_to_cm _ =

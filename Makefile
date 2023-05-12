@@ -34,9 +34,7 @@ kill :
 # Tests all the code and outputs the results to the console.
 
 test:
-	@echo "Testing..."
-	cd bot && dune exec test/main.exe
-	cd server && dune exec test/main.exe
+	./test.sh
 
 # Commands to help with submission.
 

@@ -1,5 +1,7 @@
 Return to [README.md](README.md)
 
+---
+
 # Documentation
 
 See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following assumes you've already done so.
@@ -11,6 +13,8 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 3. [Contribute Code](#contribute-code)
 4. [Interact with the Bot](#interact-with-the-bot)
 5. [Helping with Submissions](#helping-with-submissions)
+
+---
 
 ## Run the Code
 
@@ -27,13 +31,13 @@ See [INSTALL.md](INSTALL.md) for _first-time_ setup instructions. The following 
 You can interact with the bot while the code is running on Telegram `@bocaml-beta-1`.
 You can test the server via Postman. Checkout **Server API** below.
 
+---
+
 ## Test the Code
 
-First, [start the project](#start-the-project).
+Simply run `make test`!
 
-Then, run `make test`. This will run all the tests in server and bot (using OUnit). Expect to see two OKs -- one for the bot and one for the server!
-
-When you're done, don't forget to [stop the project](#stop-the-project).
+---
 
 ## Contribute Code
 
@@ -42,21 +46,21 @@ Edit these two files to get started!
 -   `bot/bin/main.ml` is the entry point for the bot.
 -   `server/bin/main.ml` is the entry point for the server.
 
-### Cross-reference the Server API
-
-Check out our [Postman](https://app.getpostman.com/join-team?invite_code=19786b3504f32611f7d4ec9a9c7a8fe1).
-
 ### Manage Dependencies
 
 This project uses OPAM to manage dependencies.
 
 To install a new dependency, run `make install` and follow the instructions.
 
+---
+
 ## Interact with the Bot
 
 Assuming you've [started the project](#start-the-project), you can interact with the bot on Telegram `@bocaml-beta-1`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
 
 If you want to more directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line. Check out **Server API** above for the endpoints.
+
+---
 
 ## Helping with Submissions
 
