@@ -38,11 +38,7 @@ test:
 # Commands to help with submission.
 
 doc:
-	@echo "Generating documentation..."
-	cd bot && ocamldoc -html -d ../docs/bot lib/*.ml lib/*.mli
-	
-	sleep 3
-	open docs/index.html
+	./doc.sh
 
 loc:
 	./loc.sh
