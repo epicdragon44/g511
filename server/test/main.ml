@@ -369,12 +369,180 @@ let test_conv_helper_lb_to_kg _ =
   assert_bool "conversion from pounds to kilograms"
     (Float.abs (result -. conversion_factor) < 0.0001)
 
+let test_conv_helper_m_to_cm _ =
+  let conversion_factor = 100.0 in
+  let result = conv_helper 1.0 "m" "cm" in
+  assert_bool "conversion from meters to centimeters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_cm_to_m _ =
+  let conversion_factor = 0.01 in
+  let result = conv_helper 1.0 "cm" "m" in
+  assert_bool "conversion from centimeters to meters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_m_to_mm _ =
+  let conversion_factor = 1000.0 in
+  let result = conv_helper 1.0 "m" "mm" in
+  assert_bool "conversion from meters to millimeters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_mm_to_m _ =
+  let conversion_factor = 0.001 in
+  let result = conv_helper 1.0 "mm" "m" in
+  assert_bool "conversion from millimeters to meters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_km_to_m _ =
+  let conversion_factor = 1000.0 in
+  let result = conv_helper 1.0 "km" "m" in
+  assert_bool "conversion from kilometers to meters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_m_to_km _ =
+  let conversion_factor = 0.001 in
+  let result = conv_helper 1.0 "m" "km" in
+  assert_bool "conversion from meters to kilometers"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_in_to_cm _ =
+  let conversion_factor = 2.54 in
+  let result = conv_helper 1.0 "in" "cm" in
+  assert_bool "conversion from inches to centimeters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_cm_to_in _ =
+  let conversion_factor = 0.393701 in
+  let result = conv_helper 1.0 "cm" "in" in
+  assert_bool "conversion from centimeters to inches"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_ft_to_in _ =
+  let conversion_factor = 12.0 in
+  let result = conv_helper 1.0 "ft" "in" in
+  assert_bool "conversion from feet to inches"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_in_to_ft _ =
+  let conversion_factor = 0.0833333 in
+  let result = conv_helper 1.0 "in" "ft" in
+  assert_bool "conversion from inches to feet"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_mi_to_km _ =
+  let conversion_factor = 1.60934 in
+  let result = conv_helper 1.0 "mi" "km" in
+  assert_bool "conversion from miles to kilometers"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_km_to_mi _ =
+  let conversion_factor = 0.621371 in
+  let result = conv_helper 1.0 "km" "mi" in
+  assert_bool "conversion from kilometers to miles"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_gal_to_L _ =
+  let conversion_factor = 3.78541 in
+  let result = conv_helper 1.0 "gal" "L" in
+  assert_bool "conversion from gallons to liters"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_L_to_gal _ =
+  let conversion_factor = 0.264172 in
+  let result = conv_helper 1.0 "L" "gal" in
+  assert_bool "conversion from liters to gallons"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_oz_to_g _ =
+  let conversion_factor = 28.3495 in
+  let result = conv_helper 1.0 "oz" "g" in
+  assert_bool "conversion from ounces to grams"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_g_to_oz _ =
+  let conversion_factor = 0.035274 in
+  let result = conv_helper 1.0 "g" "oz" in
+  assert_bool "conversion from grams to ounces"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_lb_to_oz _ =
+  let conversion_factor = 16.0 in
+  let result = conv_helper 1.0 "lb" "oz" in
+  assert_bool "conversion from pounds to ounces"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_oz_to_lb _ =
+  let conversion_factor = 0.0625 in
+  let result = conv_helper 1.0 "oz" "lb" in
+  assert_bool "conversion from ounces to pounds"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_ton_to_kg _ =
+  let conversion_factor = 907.185 in
+  let result = conv_helper 1.0 "ton" "kg" in
+  assert_bool "conversion from tons to kilograms"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_kg_to_ton _ =
+  let conversion_factor = 0.00110231 in
+  let result = conv_helper 1.0 "kg" "ton" in
+  assert_bool "conversion from kilograms to tons"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_mph_to_km_h _ =
+  let conversion_factor = 1.60934 in
+  let result = conv_helper 1.0 "mph" "km/h" in
+  assert_bool "conversion from miles per hour to kilometers per hour"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_km_h_to_mph _ =
+  let conversion_factor = 0.621371 in
+  let result = conv_helper 100.0 "km/h" "mph" in
+  assert_bool "conversion from kilometers per hour to miles per hour"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_N_to_lbf _ =
+  let conversion_factor = 0.224809 in
+  let result = conv_helper 100.0 "N" "lbf" in
+  assert_bool "conversion from newtons to pounds-force"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
+let test_conv_helper_lbf_to_N _ =
+  let conversion_factor = 4.44822 in
+  let result = conv_helper 100.0 "lbf" "N" in
+  assert_bool "conversion from pounds-force to newtons"
+    (Float.abs (result -. conversion_factor) < 0.0001)
+
 let test_conv_helper =
   [
     "test_conv_helper_m_to_ft" >:: test_conv_helper_m_to_ft;
     "test_conv_helper_ft_to_m" >:: test_conv_helper_ft_to_m;
     "test_conv_helper_kg_to_lb" >:: test_conv_helper_kg_to_lb;
     "test_conv_helper_lb_to_kg" >:: test_conv_helper_lb_to_kg;
+    "test_conv_helper_m_to_cm" >:: test_conv_helper_m_to_cm;
+    "test_conv_helper_cm_to_m" >:: test_conv_helper_cm_to_m;
+    "test_conv_helper_m_to_mm" >:: test_conv_helper_m_to_mm;
+    "test_conv_helper_mm_to_m" >:: test_conv_helper_mm_to_m;
+    "test_conv_helper_km_to_m" >:: test_conv_helper_km_to_m;
+    "test_conv_helper_m_to_km" >:: test_conv_helper_m_to_km;
+    "test_conv_helper_in_to_cm" >:: test_conv_helper_in_to_cm;
+    "test_conv_helper_cm_to_in" >:: test_conv_helper_cm_to_in;
+    "test_conv_helper_ft_to_in" >:: test_conv_helper_ft_to_in;
+    "test_conv_helper_in_to_ft" >:: test_conv_helper_in_to_ft;
+    "test_conv_helper_mi_to_km" >:: test_conv_helper_mi_to_km;
+    "test_conv_helper_km_to_mi" >:: test_conv_helper_km_to_mi;
+    "test_conv_helper_gal_to_L" >:: test_conv_helper_gal_to_L;
+    "test_conv_helper_L_to_gal" >:: test_conv_helper_L_to_gal;
+    "test_conv_helper_oz_to_g" >:: test_conv_helper_oz_to_g;
+    "test_conv_helper_g_to_oz" >:: test_conv_helper_g_to_oz;
+    "test_conv_helper_lb_to_oz" >:: test_conv_helper_lb_to_oz;
+    "test_conv_helper_oz_to_lb" >:: test_conv_helper_oz_to_lb;
+    "test_conv_helper_ton_to_kg" >:: test_conv_helper_ton_to_kg;
+    "test_conv_helper_kg_to_ton" >:: test_conv_helper_kg_to_ton;
+    "test_conv_helper_km_h_to_mph" >:: test_conv_helper_km_h_to_mph;
+    "test_conv_helper_mph_to_km_h" >:: test_conv_helper_mph_to_km_h;
+    "test_conv_helper_N_to_lbf" >:: test_conv_helper_N_to_lbf;
+    "test_conv_helper_lbf_to_N" >:: test_conv_helper_lbf_to_N;
   ]
 
 let test_pp_unit_conv_m_to_cm _ =
@@ -391,12 +559,22 @@ let test_pp_unit_conv_empty_unit _ =
   assert_raises (Failure "from_unit and to_unit should be non-empty strings")
     (fun () -> pp_unit_conv 1.5 "" "cm" 150.0)
 
+let test_pp_unit_conv_empty_unit_2 _ =
+  assert_raises (Failure "from_unit and to_unit should be non-empty strings")
+    (fun () -> pp_unit_conv 1.5 "m" "" 150.0)
+
+let test_pp_unit_conv_empty_unit_3 _ =
+  assert_raises (Failure "from_unit and to_unit should be non-empty strings")
+    (fun () -> pp_unit_conv 1.5 "" "" 150.0)
+
 let test_pp_unit_conv =
   [
     "test_pp_unit_conv_m_to_cm" >:: test_pp_unit_conv_m_to_cm;
     "test_pp_unit_conv_usd_to_cad" >:: test_pp_unit_conv_usd_to_cad;
     "test_pp_unit_conv_nonfinite_amt" >:: test_pp_unit_conv_nonfinite_amt;
     "test_pp_unit_conv_empty_unit" >:: test_pp_unit_conv_empty_unit;
+    "test_pp_unit_conv_empty_unit_2" >:: test_pp_unit_conv_empty_unit_2;
+    "test_pp_unit_conv_empty_unit_3" >:: test_pp_unit_conv_empty_unit_3;
   ]
 
 let create_weather_url_tests =
