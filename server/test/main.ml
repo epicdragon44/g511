@@ -391,12 +391,32 @@ let test_pp_unit_conv_empty_unit _ =
   assert_raises (Failure "from_unit and to_unit should be non-empty strings")
     (fun () -> pp_unit_conv 1.5 "" "cm" 150.0)
 
+let test_pp_unit_conv_lb_to_kg _ =
+  assert_equal "200 lb = 90.72 kg" (pp_unit_conv 200.0 "lb" "kg" 90.72)
+
+let test_pp_unit_conv_kmh_to_mph _ =
+  assert_equal "100 km/h = 62.14 mph" (pp_unit_conv 100.0 "km/h" "mph" 62.14)
+
+let test_pp_unit_conv_zero_value _ =
+  assert_equal "0 m = 0 cm" (pp_unit_conv 0.0 "m" "cm" 0.0)
+
+let test_pp_unit_conv_negative_value _ =
+  assert_equal "-1.5 m = -150 cm" (pp_unit_conv (-1.5) "m" "cm" (-150.0))
+
+let test_pp_unit_conv_same_units _ =
+  assert_equal "1.5 m = 1.5 m" (pp_unit_conv 1.5 "m" "m" 1.5)
+
 let test_pp_unit_conv =
   [
     "test_pp_unit_conv_m_to_cm" >:: test_pp_unit_conv_m_to_cm;
     "test_pp_unit_conv_usd_to_cad" >:: test_pp_unit_conv_usd_to_cad;
     "test_pp_unit_conv_nonfinite_amt" >:: test_pp_unit_conv_nonfinite_amt;
     "test_pp_unit_conv_empty_unit" >:: test_pp_unit_conv_empty_unit;
+    "test_pp_unit_conv_lb_to_kg" >:: test_pp_unit_conv_lb_to_kg;
+    "test_pp_unit_conv_kmh_to_mph" >:: test_pp_unit_conv_kmh_to_mph;
+    "test_pp_unit_conv_zero_value" >:: test_pp_unit_conv_zero_value;
+    "test_pp_unit_conv_negative_value" >:: test_pp_unit_conv_negative_value;
+    "test_pp_unit_conv_same_units" >:: test_pp_unit_conv_same_units;
   ]
 
 let create_weather_url_tests =
@@ -404,6 +424,63 @@ let create_weather_url_tests =
     "create_weather_url"
     >:: create_weather_url_test_helper "test_key" "New York"
           "http://api.weatherstack.com/current?access_key=test_key&query=New%20York";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key2" "Los Angeles"
+          "http://api.weatherstack.com/current?access_key=test_key2&query=Los%20Angeles";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key3" "Chicago"
+          "http://api.weatherstack.com/current?access_key=test_key3&query=Chicago";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key4" "Houston"
+          "http://api.weatherstack.com/current?access_key=test_key4&query=Houston";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key5" "Phoenix"
+          "http://api.weatherstack.com/current?access_key=test_key5&query=Phoenix";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key6" "Philadelphia"
+          "http://api.weatherstack.com/current?access_key=test_key6&query=Philadelphia";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key7" "San Antonio"
+          "http://api.weatherstack.com/current?access_key=test_key7&query=San%20Antonio";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key8" "San Diego"
+          "http://api.weatherstack.com/current?access_key=test_key8&query=San%20Diego";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key9" "Dallas"
+          "http://api.weatherstack.com/current?access_key=test_key9&query=Dallas";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key10" "San Jose"
+          "http://api.weatherstack.com/current?access_key=test_key10&query=San%20Jose";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key11" "Austin"
+          "http://api.weatherstack.com/current?access_key=test_key11&query=Austin";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key12" "Jacksonville"
+          "http://api.weatherstack.com/current?access_key=test_key12&query=Jacksonville";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key13" "San Francisco"
+          "http://api.weatherstack.com/current?access_key=test_key13&query=San%20Francisco";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key14" "Indianapolis"
+          "http://api.weatherstack.com/current?access_key=test_key14&query=Indianapolis";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key15" "Columbus"
+          "http://api.weatherstack.com/current?access_key=test_key15&query=Columbus";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key16" "Fort Worth"
+          "http://api.weatherstack.com/current?access_key=test_key16&query=Fort%20Worth";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key17" "Charlotte"
+          "http://api.weatherstack.com/current?access_key=test_key17&query=Charlotte";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key18" "Detroit"
+          "http://api.weatherstack.com/current?access_key=test_key18&query=Detroit";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key19" "El Paso"
+          "http://api.weatherstack.com/current?access_key=test_key19&query=El%20Paso";
+    "create_weather_url"
+    >:: create_weather_url_test_helper "test_key20" "Seattle"
+          "http://api.weatherstack.com/current?access_key=test_key20&query=Seattle";
   ]
 
 let get_response_body_tests =
@@ -477,6 +554,44 @@ let lang_matcher_tests =
     "lang_matcher" >:: lang_matcher_test_helper "German" "de";
     "lang_matcher"
     >:: lang_matcher_test_helper "UnsupportedLanguage" "unsupported";
+    "lang_matcher" >:: lang_matcher_test_helper "Azerbaijani" "az";
+    "lang_matcher" >:: lang_matcher_test_helper "Albanian" "sq";
+    "lang_matcher" >:: lang_matcher_test_helper "Amharic" "am";
+    "lang_matcher" >:: lang_matcher_test_helper "Arabic" "ar";
+    "lang_matcher" >:: lang_matcher_test_helper "Armenian" "hy";
+    "lang_matcher" >:: lang_matcher_test_helper "Afrikaans" "af";
+    "lang_matcher" >:: lang_matcher_test_helper "Basque" "eu";
+    "lang_matcher" >:: lang_matcher_test_helper "Bashkir" "ba";
+    "lang_matcher" >:: lang_matcher_test_helper "Belarusian" "be";
+    "lang_matcher" >:: lang_matcher_test_helper "Bengal" "bn";
+    "lang_matcher" >:: lang_matcher_test_helper "Burmese" "my";
+    "lang_matcher" >:: lang_matcher_test_helper "Bulgarian" "bg";
+    "lang_matcher" >:: lang_matcher_test_helper "Bosnian" "bs";
+    "lang_matcher" >:: lang_matcher_test_helper "Welsh" "cy";
+    "lang_matcher" >:: lang_matcher_test_helper "Hungarian" "hu";
+    "lang_matcher" >:: lang_matcher_test_helper "Vietnamese" "vi";
+    "lang_matcher" >:: lang_matcher_test_helper "Haitian" "ht";
+    "lang_matcher" >:: lang_matcher_test_helper "Galician" "gl";
+    "lang_matcher" >:: lang_matcher_test_helper "Dutch" "nl";
+    "lang_matcher" >:: lang_matcher_test_helper "Hill Mari" "mrj";
+    "lang_matcher" >:: lang_matcher_test_helper "Greek" "el";
+    "lang_matcher" >:: lang_matcher_test_helper "Georgian" "ka";
+    "lang_matcher" >:: lang_matcher_test_helper "Gujarati" "gu";
+    "lang_matcher" >:: lang_matcher_test_helper "Danish" "da";
+    "lang_matcher" >:: lang_matcher_test_helper "Hebrew" "he";
+    "lang_matcher" >:: lang_matcher_test_helper "Yiddish" "yi";
+    "lang_matcher" >:: lang_matcher_test_helper "Indonesian" "id";
+    "lang_matcher" >:: lang_matcher_test_helper "Irish" "ga";
+    "lang_matcher" >:: lang_matcher_test_helper "Italian" "it";
+    "lang_matcher" >:: lang_matcher_test_helper "Icelandic" "is";
+    "lang_matcher" >:: lang_matcher_test_helper "Spanish" "es";
+    "lang_matcher" >:: lang_matcher_test_helper "Kazakh" "kk";
+    "lang_matcher" >:: lang_matcher_test_helper "Kannada" "kn";
+    "lang_matcher" >:: lang_matcher_test_helper "Catalan" "ca";
+    "lang_matcher" >:: lang_matcher_test_helper "Kirghiz" "ky";
+    "lang_matcher" >:: lang_matcher_test_helper "Chinese" "zh";
+    "lang_matcher" >:: lang_matcher_test_helper "Korean" "ko";
+    "lang_matcher" >:: lang_matcher_test_helper "Xhosa" "xh";
   ]
 
 let translation_get_request_tests =
@@ -490,6 +605,116 @@ let extract_translation_from_body_tests =
     "extract_translation_from_body"
     >:: extract_translation_from_body_test_helper "{\"text\": [\"Bonjour\"]}"
           "Bonjour";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hola\"]}"
+          "Hola";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hello\"]}"
+          "Hello";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Guten Tag\"]}"
+          "Guten Tag";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Ciao\"]}"
+          "Ciao";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Oi\"]}" "Oi";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hej\"]}" "Hej";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hallo\"]}"
+          "Hallo";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Kon'nichiwa\"]}" "Kon'nichiwa";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Nǐ hǎo\"]}"
+          "Nǐ hǎo";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Anyoung haseyo\"]}" "Anyoung haseyo";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Salam\"]}"
+          "Salam";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Jambo\"]}"
+          "Jambo";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Namaste\"]}"
+          "Namaste";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Zdravo\"]}"
+          "Zdravo";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Merhaba\"]}"
+          "Merhaba";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Sveiki\"]}"
+          "Sveiki";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Tere\"]}"
+          "Tere";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Labas\"]}"
+          "Labas";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Szia\"]}"
+          "Szia";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Aloha\"]}"
+          "Aloha";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Shalom\"]}"
+          "Shalom";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Salaam\"]}"
+          "Salaam";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Privet\"]}"
+          "Privet";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"God dag\"]}"
+          "God dag";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Buna ziua\"]}"
+          "Buna ziua";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Selamat siang\"]}" "Selamat siang";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Asalaam alaikum\"]}" "Asalaam alaikum";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Dzien dobry\"]}" "Dzien dobry";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Sawubona\"]}"
+          "Sawubona";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Sat sri akaal\"]}" "Sat sri akaal";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Yasou\"]}"
+          "Yasou";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Ahoj\"]}"
+          "Ahoj";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Dobry den\"]}"
+          "Dobry den";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Oi\"]}" "Oi";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper
+          "{\"text\": [\"Zdravstvuyte\"]}" "Zdravstvuyte";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hoi\"]}" "Hoi";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hei\"]}" "Hei";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Moi\"]}" "Moi";
+    "extract_translation_from_body"
+    >:: extract_translation_from_body_test_helper "{\"text\": [\"Hej\"]}" "Hej";
   ]
 
 let translation_response_builder_tests =
