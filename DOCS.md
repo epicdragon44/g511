@@ -75,7 +75,17 @@ To install a new dependency, run `make install` and follow the instructions.
 
 ## Interact with the Bot
 
-Assuming you've [started the project](#start-the-project), you can interact with the bot on [Telegram](https://t.me/BocamlBot) `@BocamlBot`. Just send it messages! For instance, try sending "/health_check", and it should respond with "Hi there!".
+Assuming you've [started the project](#start-the-project), you can interact with the bot on [Telegram](https://t.me/BocamlBot) `@BocamlBot`. Just send it messages!
+
+(Yes, you'll probably need to download [Telegram](https://telegram.org/) if you don't already have it.)
+
+For instance, try sending:
+
+-   "/health_check", and it should respond with "Hi there!".
+-   "/rng 1 100", and it should respond with a random number between 1 and 100
+-   "/coinflip", and it should respond with either "Heads" or "Tails"
+-   "/play start x", and it should start playing Tic Tac Toe with you.
+-   "/convert_units 500 ft m", and it should respond with "152.4 m"
 
 (If you want to bypass Telegram and directly interact with the server functions, you can use whatever HTTP client you want. For instance, you can use Postman for a GUI interface; or cURL if you prefer the command line.)
 
