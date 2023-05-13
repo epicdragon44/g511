@@ -497,19 +497,19 @@ let test_conv_helper_mph_to_km_h _ =
 
 let test_conv_helper_km_h_to_mph _ =
   let conversion_factor = 0.621371 in
-  let result = conv_helper 100.0 "km/h" "mph" in
+  let result = conv_helper 1.0 "km/h" "mph" in
   assert_bool "conversion from kilometers per hour to miles per hour"
     (Float.abs (result -. conversion_factor) < 0.0001)
 
 let test_conv_helper_N_to_lbf _ =
   let conversion_factor = 0.224809 in
-  let result = conv_helper 100.0 "N" "lbf" in
+  let result = conv_helper 1.0 "N" "lbf" in
   assert_bool "conversion from newtons to pounds-force"
     (Float.abs (result -. conversion_factor) < 0.0001)
 
 let test_conv_helper_lbf_to_N _ =
   let conversion_factor = 4.44822 in
-  let result = conv_helper 100.0 "lbf" "N" in
+  let result = conv_helper 1.0 "lbf" "N" in
   assert_bool "conversion from pounds-force to newtons"
     (Float.abs (result -. conversion_factor) < 0.0001)
 
