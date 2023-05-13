@@ -10,6 +10,8 @@ The `cloc` command that the Final Project assignment on Canvas recommends (`cloc
 
 Thus, our `make loc` command counts all lines of code in `.ml` and `.mli` files, and those files only. Obviously, it excludes `_build` folders.
 
+(For grading purposes, of course, we can't stop you from using cloc if you want to. We're confident that our project more than fulfills the line requirement, regardless of which tool you use.)
+
 ---
 
 Wondering how to count the lines of code yourself? Return to the [DOCS.md](DOCS.md) file and read the section **Counting Lines of Code**.
