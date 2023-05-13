@@ -93,7 +93,7 @@ let json_parser (parsed_body : string) : string list =
            message
            |> Yojson.Basic.Util.member "message"
            |> Yojson.Basic.Util.member "content"
-           |> Yojson.Basic.Util.to_string)
+           |> Yojson.Basic.Util.to_string |> String.trim)
   else failwith "Invalid Input: Empty body"
 
 let chatbot_body_handler (parsed_body : string) : Rock.Response.t =
