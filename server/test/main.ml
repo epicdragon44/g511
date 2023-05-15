@@ -114,7 +114,7 @@ let header_creator_tests =
       (Cohttp.Header.of_list
          [
            ("Content-Type", "application/json");
-           ("Authorization", "Bearer " ^ "weeu2198ue281ue1\t\t");
+           ("Authorization", "Bearer " ^ "weeu2198ue281ue1");
          ]);
     header_creator_test_helper "inputting a key that has random input"
       "dnwjqdnoiu1jhd9h280919wdWQCASFWQ"
