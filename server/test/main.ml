@@ -330,7 +330,8 @@ let translation_get_request_test_helper url expected_status _ =
       let status_code =
         Cohttp.Response.status response |> Cohttp.Code.code_of_status
       in
-      Lwt.return (assert_equal expected_status status_code ~printer:string_of_int))
+      Lwt.return
+        (assert_equal expected_status status_code ~printer:string_of_int) )
 
 let extract_translation_from_body_test_helper body expected _ =
   let r = extract_translation_from_body (Cohttp_lwt.Body.of_string body) in
